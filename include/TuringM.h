@@ -16,7 +16,7 @@ class TuringM : QMainWindow {
  private slots:
   void editLeftCont();
   void editRightCont();
-  void exit();
+  static void exit();
 
  private:
   const int width = 1500, height = 800;
@@ -35,6 +35,7 @@ class TuringM : QMainWindow {
   bool right_opened_ = false;
 
   QMainWindow* window_;
+
   QWidget* turing_head_;
   QWidget* left_ear_;
   QWidget* left_controller_;
@@ -44,4 +45,11 @@ class TuringM : QMainWindow {
   QPushButton* open_left_controller_;
   QPushButton* open_right_controller_;
   QPushButton* exit_btn_;
+  QPushButton* confirm_alphabets;
+
+  QLineEdit* lines_alphabet_edit;
+  QLineEdit* heads_alphabet_edit;
+
+  void closeLeftElms();
+  void openLeftElms();
 };

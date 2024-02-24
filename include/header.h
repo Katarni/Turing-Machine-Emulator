@@ -23,3 +23,4 @@
 #include <QColor>
 #include <QBrush>
 #include <QTimer>
+#include <QTableWidget>

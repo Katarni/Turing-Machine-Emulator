@@ -75,6 +75,15 @@ TuringM::TuringM() {
   open_right_controller_->setText(">");
   connect(open_right_controller_, SIGNAL(released()), this, SLOT(editRightCont()));
 
+  //// Alphabets
+  lines_alphabet_edit = new QLineEdit(window_);
+  lines_alphabet_edit->resize(170, 45);
+  lines_alphabet_edit->move(180, 210);
+  lines_alphabet_edit->setStyleSheet("QLineEdit { padding-left: 5px; "
+                                                  "font-size: 30px; }");
+  lines_alphabet_edit->setDisabled(true);
+  lines_alphabet_edit->hide();
+
   window_->show();
 }
 
@@ -84,13 +93,13 @@ void TuringM::editLeftCont() {
     left_controller_->move(close_cont_left_x_, close_cont_left_y_);
     left_ear_->move(close_ear_left_x_, close_ear_left_y_);
     open_left_controller_->move(395, 353);
-    open_left_controller_->setText("<");
+    closeLeftElms();
   } else {
     left_controller_->show();
     left_controller_->move(open_cont_left_x_, open_cont_left_y_);
     left_ear_->move(open_ear_left_x_, open_ear_left_y_);
     open_left_controller_->move(17, 353);
-    open_left_controller_->setText(">");
+    openLeftElms();
   }
   left_opened_ = !left_opened_;
 }
@@ -114,4 +123,16 @@ void TuringM::editRightCont() {
 
 void TuringM::exit() {
   std::exit(0);
+}
+
+void TuringM::closeLeftElms() {
+  lines_alphabet_edit->setDisabled(true);
+  lines_alphabet_edit->hide();
+  open_left_controller_->setText(">");
+}
+
+void TuringM::openLeftElms() {
+  lines_alphabet_edit->setDisabled(false);
+  lines_alphabet_edit->show();
+  open_left_controller_->setText("<");
 }
