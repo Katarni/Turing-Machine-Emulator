@@ -16,16 +16,17 @@ class TuringM : QMainWindow {
  private slots:
   void editLeftCont();
   void editRightCont();
+
   static void exit();
+
+  void confirmAlphabets();
 
  private:
   const int width = 1500, height = 800;
-
   const int close_ear_left_x_ = 370, close_ear_left_y_ = 150;
   const int open_ear_left_x_ = -8, open_ear_left_y_ = 150;
   const int open_cont_left_x_ = 70, open_cont_left_y_ = 125;
   const int close_cont_left_x_ = 448, close_cont_left_y_ = 125;
-
   const int close_ear_right_x_ = 860, close_ear_right_y_ = 150;
   const int open_ear_right_x_ = 1233, open_ear_right_y_ = 150;
   const int open_cont_right_x_ = 840, open_cont_right_y_ = 125;
@@ -33,6 +34,8 @@ class TuringM : QMainWindow {
 
   bool left_opened_ = false;
   bool right_opened_ = false;
+
+  std::vector<char> heads_alphabet_, tapes_alphabet_;
 
   QMainWindow* window_;
 

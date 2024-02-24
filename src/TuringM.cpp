@@ -82,6 +82,7 @@ TuringM::TuringM() {
   confirm_alphabets_->setText("Confirm");
   confirm_alphabets_->setDisabled(true);
   confirm_alphabets_->hide();
+  connect(confirm_alphabets_, SIGNAL(released()), this, SLOT(confirmAlphabets()));
 
   //// Right Side
   right_ear_ = new QWidget(window_);
@@ -165,4 +166,18 @@ void TuringM::openLeftElms() {
   confirm_alphabets_->show();
   heads_alphabet_edit_->show();
   open_left_controller_->setText("<");
+}
+
+void TuringM::confirmAlphabets() {
+  std::string tape = tape_alphabet_edit_->text().toStdString();
+  std::string head = heads_alphabet_edit_->text().toStdString();
+
+  tapes_alphabet_.clear();
+  heads_alphabet_.clear();
+  for (char c : tape) {
+    tapes_alphabet_.push_back(c);
+  }
+  for (char c : head) {
+    heads_alphabet_.push_back(c);
+  }
 }
