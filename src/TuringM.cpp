@@ -18,6 +18,17 @@ TuringM::TuringM() {
                              "background-position: center center;"
                              "background-repeat: no-repeat; }");
 
+  exit_btn_ = new QPushButton(window_);
+  exit_btn_->resize(40, 40);
+  exit_btn_->move(705, 20);
+  exit_btn_->setStyleSheet("QPushButton { background: transparent;"
+                                        "border: 2px solid red;"
+                                        "border-radius: 20px;"
+                                        "color: red;"
+                                        "font-size: 30px }");
+  exit_btn_->setText("X");
+  connect(exit_btn_, SIGNAL(released()), this, SLOT(exit()));
+
   //// Left Side
   left_ear_ = new QWidget(window_);
   left_ear_->setFixedSize(220, 400);
@@ -99,4 +110,8 @@ void TuringM::editRightCont() {
     open_right_controller_->setText("<");
   }
   right_opened_ = !right_opened_;
+}
+
+void TuringM::exit() {
+  std::exit(0);
 }

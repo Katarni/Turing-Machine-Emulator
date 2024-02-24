@@ -16,6 +16,7 @@ class TuringM : QMainWindow {
  private slots:
   void editLeftCont();
   void editRightCont();
+  void exit();
 
  private:
   const int width = 1500, height = 800;
@@ -42,4 +43,5 @@ class TuringM : QMainWindow {
 
   QPushButton* open_left_controller_;
   QPushButton* open_right_controller_;
+  QPushButton* exit_btn_;
 };
