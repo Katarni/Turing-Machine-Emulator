@@ -47,27 +47,41 @@ TuringM::TuringM() {
   open_left_controller_->resize(50, 45);
   open_left_controller_->move(395, 353);
   open_left_controller_->setStyleSheet("QPushButton { background: transparent;"
-                                                    "color: #184C01;"
+                                                    "color: #184c01;"
                                                     "font-size: 45px; } ");
   open_left_controller_->setText("<");
   connect(open_left_controller_, SIGNAL(released()), this, SLOT(editLeftCont()));
 
   //// Alphabets
-  lines_alphabet_edit = new QLineEdit(window_);
-  lines_alphabet_edit->resize(170, 45);
-  lines_alphabet_edit->move(180, 210);
-  lines_alphabet_edit->setStyleSheet("QLineEdit { padding-left: 5px; "
-                                                  "font-size: 30px; }");
-  lines_alphabet_edit->setDisabled(true);
-  lines_alphabet_edit->hide();
+  tape_alphabet_edit_ = new QLineEdit(window_);
+  tape_alphabet_edit_->resize(170, 45);
+  tape_alphabet_edit_->move(180, 210);
+  tape_alphabet_edit_->setStyleSheet("QLineEdit { padding-left: 5px; "
+                                                  "font-size: 25px;"
+                                                  "background: #9ea3a2; }");
+  tape_alphabet_edit_->setPlaceholderText("Tape's");
+  tape_alphabet_edit_->setDisabled(true);
+  tape_alphabet_edit_->hide();
 
-  heads_alphabet_edit = new QLineEdit(window_);
-  heads_alphabet_edit->resize(170, 45);
-  heads_alphabet_edit->move(180, 265);
-  heads_alphabet_edit->setStyleSheet("QLineEdit { padding-left: 5px; "
-                                                  "font-size: 30px; }");
-  heads_alphabet_edit->setDisabled(true);
-  heads_alphabet_edit->hide();
+  heads_alphabet_edit_ = new QLineEdit(window_);
+  heads_alphabet_edit_->resize(170, 45);
+  heads_alphabet_edit_->move(180, 265);
+  heads_alphabet_edit_->setStyleSheet("QLineEdit { padding-left: 5px; "
+                                                  "font-size: 25px;"
+                                                  "background: #9ea3a2; }");
+  heads_alphabet_edit_->setPlaceholderText("Head's");
+  heads_alphabet_edit_->setDisabled(true);
+  heads_alphabet_edit_->hide();
+
+  confirm_alphabets_ = new QPushButton(window_);
+  confirm_alphabets_->resize(100, 50);
+  confirm_alphabets_->move(365, 210);
+  confirm_alphabets_->setStyleSheet("QPushButton { background: #9ea3a2;"
+                                                  "border-radius: 10px;"
+                                                  "font-size: 20px }");
+  confirm_alphabets_->setText("Confirm");
+  confirm_alphabets_->setDisabled(true);
+  confirm_alphabets_->hide();
 
   //// Right Side
   right_ear_ = new QWidget(window_);
@@ -134,17 +148,21 @@ void TuringM::exit() {
 }
 
 void TuringM::closeLeftElms() {
-  lines_alphabet_edit->setDisabled(true);
-  lines_alphabet_edit->hide();
-  heads_alphabet_edit->setDisabled(true);
-  heads_alphabet_edit->hide();
+  tape_alphabet_edit_->setDisabled(true);
+  tape_alphabet_edit_->hide();
+  heads_alphabet_edit_->setDisabled(true);
+  confirm_alphabets_->setDisabled(true);
+  confirm_alphabets_->hide();
+  heads_alphabet_edit_->hide();
   open_left_controller_->setText(">");
 }
 
 void TuringM::openLeftElms() {
-  lines_alphabet_edit->setDisabled(false);
-  lines_alphabet_edit->show();
-  heads_alphabet_edit->setDisabled(false);
-  heads_alphabet_edit->show();
+  tape_alphabet_edit_->setDisabled(false);
+  tape_alphabet_edit_->show();
+  heads_alphabet_edit_->setDisabled(false);
+  confirm_alphabets_->setDisabled(false);
+  confirm_alphabets_->show();
+  heads_alphabet_edit_->show();
   open_left_controller_->setText("<");
 }

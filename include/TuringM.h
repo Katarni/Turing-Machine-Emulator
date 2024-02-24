@@ -45,10 +45,10 @@ class TuringM : QMainWindow {
   QPushButton* open_left_controller_;
   QPushButton* open_right_controller_;
   QPushButton* exit_btn_;
-  QPushButton* confirm_alphabets;
+  QPushButton* confirm_alphabets_;
 
-  QLineEdit* lines_alphabet_edit;
-  QLineEdit* heads_alphabet_edit;
+  QLineEdit* tape_alphabet_edit_;
+  QLineEdit* heads_alphabet_edit_;
 
   void closeLeftElms();
   void openLeftElms();
