@@ -52,6 +52,23 @@ TuringM::TuringM() {
   open_left_controller_->setText("<");
   connect(open_left_controller_, SIGNAL(released()), this, SLOT(editLeftCont()));
 
+  //// Alphabets
+  lines_alphabet_edit = new QLineEdit(window_);
+  lines_alphabet_edit->resize(170, 45);
+  lines_alphabet_edit->move(180, 210);
+  lines_alphabet_edit->setStyleSheet("QLineEdit { padding-left: 5px; "
+                                                  "font-size: 30px; }");
+  lines_alphabet_edit->setDisabled(true);
+  lines_alphabet_edit->hide();
+
+  heads_alphabet_edit = new QLineEdit(window_);
+  heads_alphabet_edit->resize(170, 45);
+  heads_alphabet_edit->move(180, 265);
+  heads_alphabet_edit->setStyleSheet("QLineEdit { padding-left: 5px; "
+                                                  "font-size: 30px; }");
+  heads_alphabet_edit->setDisabled(true);
+  heads_alphabet_edit->hide();
+
   //// Right Side
   right_ear_ = new QWidget(window_);
   right_ear_->setFixedSize(220, 400);
@@ -74,15 +91,6 @@ TuringM::TuringM() {
                                       "font-size: 45px; } ");
   open_right_controller_->setText(">");
   connect(open_right_controller_, SIGNAL(released()), this, SLOT(editRightCont()));
-
-  //// Alphabets
-  lines_alphabet_edit = new QLineEdit(window_);
-  lines_alphabet_edit->resize(170, 45);
-  lines_alphabet_edit->move(180, 210);
-  lines_alphabet_edit->setStyleSheet("QLineEdit { padding-left: 5px; "
-                                                  "font-size: 30px; }");
-  lines_alphabet_edit->setDisabled(true);
-  lines_alphabet_edit->hide();
 
   window_->show();
 }
@@ -128,11 +136,15 @@ void TuringM::exit() {
 void TuringM::closeLeftElms() {
   lines_alphabet_edit->setDisabled(true);
   lines_alphabet_edit->hide();
+  heads_alphabet_edit->setDisabled(true);
+  heads_alphabet_edit->hide();
   open_left_controller_->setText(">");
 }
 
 void TuringM::openLeftElms() {
   lines_alphabet_edit->setDisabled(false);
   lines_alphabet_edit->show();
+  heads_alphabet_edit->setDisabled(false);
+  heads_alphabet_edit->show();
   open_left_controller_->setText("<");
 }
