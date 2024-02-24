@@ -1,5 +1,5 @@
 //
-// Created by Тимур Ахметзянов on 22.02.2024.
+// Created by_ Тимур Ахметзянов on 22.02.2024.
 //
 
 #pragma once
@@ -14,32 +14,32 @@ class TuringM : QMainWindow {
   TuringM();
 
  private slots:
-  void edit_left_cont();
-  void edit_right_cont();
+  void editLeftCont();
+  void editRightCont();
 
  private:
   const int width = 1500, height = 800;
 
-  const int close_ear_left_x = 370, close_ear_left_y = 150;
-  const int open_ear_left_x = -8, open_ear_left_y = 150;
-  const int open_cont_left_x = 70, open_cont_left_y = 125;
-  const int close_cont_left_x = 448, close_cont_left_y = 125;
+  const int close_ear_left_x_ = 370, close_ear_left_y_ = 150;
+  const int open_ear_left_x_ = -8, open_ear_left_y_ = 150;
+  const int open_cont_left_x_ = 70, open_cont_left_y_ = 125;
+  const int close_cont_left_x_ = 448, close_cont_left_y_ = 125;
 
-  const int close_ear_right_x = 860, close_ear_right_y = 150;
-  const int open_ear_right_x = 1233, open_ear_right_y = 150;
-  const int open_cont_right_x = 840, open_cont_right_y = 125;
-  const int close_cont_right_x = 462, close_cont_right_y = 125;
+  const int close_ear_right_x_ = 860, close_ear_right_y_ = 150;
+  const int open_ear_right_x_ = 1233, open_ear_right_y_ = 150;
+  const int open_cont_right_x_ = 840, open_cont_right_y_ = 125;
+  const int close_cont_right_x_ = 462, close_cont_right_y_ = 125;
 
-  bool left_opened = false;
-  bool right_opened = false;
+  bool left_opened_ = false;
+  bool right_opened_ = false;
 
-  QMainWindow* window;
-  QWidget* turing_head;
-  QWidget* left_ear;
-  QWidget* left_controller;
-  QWidget* right_ear;
-  QWidget* right_controller;
+  QMainWindow* window_;
+  QWidget* turing_head_;
+  QWidget* left_ear_;
+  QWidget* left_controller_;
+  QWidget* right_ear_;
+  QWidget* right_controller_;
 
-  QPushButton* open_left_controller;
-  QPushButton* open_right_controller;
+  QPushButton* open_left_controller_;
+  QPushButton* open_right_controller_;
 };

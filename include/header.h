@@ -9,6 +9,8 @@
 #include <cmath>
 #include <set>
 #include <unordered_set>
+#include <thread>
+#include <chrono>
 
 // qt
 #include <QMainWindow>
@@ -20,3 +22,4 @@
 #include <QLineEdit>
 #include <QColor>
 #include <QBrush>
+#include <QTimer>
