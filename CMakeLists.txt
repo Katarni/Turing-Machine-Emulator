@@ -14,7 +14,7 @@ find_package(Qt6 COMPONENTS
         REQUIRED)
 
 add_executable(TuringMachine main.cpp
-        TuringM.cpp
+        src/TuringM.cpp
         include/TuringM.h
         include/header.h)
 target_link_libraries(TuringMachine
