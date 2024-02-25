@@ -22,9 +22,9 @@ App::App() {
   exit_btn_->resize(40, 40);
   exit_btn_->move(705, 20);
   exit_btn_->setStyleSheet("QPushButton { background: transparent;"
-                           "border: 2px solid red;"
+                           "border: 2px solid black;"
                            "border-radius: 20px;"
-                           "color: red;"
+                           "color: black;"
                            "font-size: 30px }");
   exit_btn_->setText("X");
   connect(exit_btn_, SIGNAL(released()), this, SLOT(exit()));
@@ -169,6 +169,13 @@ void App::openLeftElms() {
 }
 
 void App::confirmAlphabets() {
-  std::string tape = tape_alphabet_edit_->text().toStdString();
-  std::string head = heads_alphabet_edit_->text().toStdString();
+  auto tape = tape_alphabet_edit_->text().toStdString();
+  auto head = heads_alphabet_edit_->text().toStdString();
+
+  turing.changeAlphabets(tape, head);
+  updateTable();
+}
+
+void App::updateTable() {
+
 }

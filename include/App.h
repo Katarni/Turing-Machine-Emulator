@@ -56,4 +56,6 @@ class App : QMainWindow {
 
   void closeLeftElms();
   void openLeftElms();
+
+  void updateTable();
 };

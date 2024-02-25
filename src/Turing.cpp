@@ -62,8 +62,8 @@ void Turing::updateTable(bool clean) {
   }
 
   for (auto& row : table_) {
-    row.resize(table_.size() + letters.size());
-    for (int j = (int)table_.size() - (int)letters.size() - 1; j >= lambda_pos; --j) {
+    row.resize(row.size() + letters.size());
+    for (int j = (int)row.size() - (int)letters.size() - 1; j >= lambda_pos; --j) {
       row[j + letters.size()] = row[j];
     }
   }
@@ -71,5 +71,21 @@ void Turing::updateTable(bool clean) {
   for (char c : letters) {
     table_[0][lambda_pos] = c;
     ++lambda_pos;
+  }
+
+  letters.clear();
+  for (char c : heads_alphabet_) letters.insert(c);
+
+  for (int i = lambda_pos + 1; i < table_[0].size(); ++i) {
+    letters.erase(table_[0][i][0]);
+  }
+
+  for (auto& row : table_) {
+    row.resize(row.size() + letters.size());
+  }
+
+  int i = lambda_pos + 1;
+  for (char c : letters) {
+    table_[0][i++] = c;
   }
 }
