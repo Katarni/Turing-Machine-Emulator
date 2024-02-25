@@ -35,6 +35,7 @@ class App : QMainWindow {
 
   bool left_opened_ = false;
   bool right_opened_ = false;
+  bool set_alphabets = false;
 
   Turing turing;
 
@@ -54,8 +55,12 @@ class App : QMainWindow {
   QLineEdit* tape_alphabet_edit_;
   QLineEdit* heads_alphabet_edit_;
 
+  QTableWidget* table_;
+
   void closeLeftElms();
   void openLeftElms();
+  void closeRightElms();
+  void openRightElms();
 
   void updateTable();
 };

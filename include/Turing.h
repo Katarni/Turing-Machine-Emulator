@@ -8,7 +8,7 @@ class Turing {
  public:
   Turing();
 
-  void changeAlphabets(std::string &new_tape, std::string &new_head);
+  bool changeAlphabets(std::string &new_tape, std::string &new_head);
 
   void updateTable(bool clean);
 

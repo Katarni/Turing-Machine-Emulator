@@ -13,7 +13,7 @@ Turing::Turing() {
   table_[0][1] = "/\\";
 }
 
-void Turing::changeAlphabets(std::string &new_tape, std::string &new_head) {
+bool Turing::changeAlphabets(std::string &new_tape, std::string &new_head) {
   // проверить алфавиты на корректность
 
   for (char c : tapes_alphabet_) {
@@ -21,7 +21,7 @@ void Turing::changeAlphabets(std::string &new_tape, std::string &new_head) {
       tapes_alphabet_.swap(new_tape);
       heads_alphabet_.swap(new_head);
       updateTable(true);
-      return;
+      return true;
     }
   }
 
@@ -30,12 +30,13 @@ void Turing::changeAlphabets(std::string &new_tape, std::string &new_head) {
     if (new_head.find(c) == std::string::npos) {
       heads_alphabet_.swap(new_head);
       updateTable(true);
-      return;
+      return true;
     }
   }
 
   heads_alphabet_.swap(new_head);
   updateTable(false);
+  return true;
 }
 
 void Turing::updateTable(bool clean) {

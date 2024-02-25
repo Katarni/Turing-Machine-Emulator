@@ -102,10 +102,19 @@ App::App() {
   open_right_controller_->resize(50, 45);
   open_right_controller_->move(1020, 353);
   open_right_controller_->setStyleSheet("QPushButton { background: transparent;"
-                                        "color: #184C01;"
+                                        "color: #184c01;"
                                         "font-size: 45px; } ");
   open_right_controller_->setText(">");
   connect(open_right_controller_, SIGNAL(released()), this, SLOT(editRightCont()));
+
+  //// Table
+  table_ = new QTableWidget(window_);
+  table_->resize(308, 285);
+  table_->move(975, 205);
+  table_->setStyleSheet("QTableWidget { background: #9ea3a2; }");
+  table_->hide();
+  table_->setDisabled(true);
+  updateTable();
 
   window_->show();
 }
@@ -133,13 +142,13 @@ void App::editRightCont() {
     right_controller_->move(close_cont_right_x_, close_cont_right_y_);
     right_ear_->move(close_ear_right_x_, close_ear_right_y_);
     open_right_controller_->move(1020, 353);
-    open_right_controller_->setText(">");
+    closeRightElms();
   } else {
     right_controller_->show();
     right_controller_->move(open_cont_right_x_, open_cont_right_y_);
     right_ear_->move(open_ear_right_x_, open_ear_right_y_);
     open_right_controller_->move(1393, 353);
-    open_right_controller_->setText("<");
+    openRightElms();
   }
   right_opened_ = !right_opened_;
 }
@@ -155,7 +164,7 @@ void App::closeLeftElms() {
   confirm_alphabets_->setDisabled(true);
   confirm_alphabets_->hide();
   heads_alphabet_edit_->hide();
-  open_left_controller_->setText(">");
+  open_left_controller_->setText("<");
 }
 
 void App::openLeftElms() {
@@ -165,14 +174,32 @@ void App::openLeftElms() {
   confirm_alphabets_->setDisabled(false);
   confirm_alphabets_->show();
   heads_alphabet_edit_->show();
-  open_left_controller_->setText("<");
+  open_left_controller_->setText(">");
+}
+
+void App::closeRightElms() {
+  open_right_controller_->setText(">");
+  table_->hide();
+  table_->setDisabled(true);
+}
+
+void App::openRightElms() {
+  open_right_controller_->setText("<");
+  table_->show();
+  table_->setEnabled(set_alphabets);
 }
 
 void App::confirmAlphabets() {
   auto tape = tape_alphabet_edit_->text().toStdString();
   auto head = heads_alphabet_edit_->text().toStdString();
 
-  turing.changeAlphabets(tape, head);
+  if (!turing.changeAlphabets(tape, head)) {
+    tape_alphabet_edit_->setText("incorrect");
+    heads_alphabet_edit_->setText("incorrect");
+    return;
+  }
+
+  set_alphabets = true;
   updateTable();
 }
 
