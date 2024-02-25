@@ -2,9 +2,9 @@
 // Created by Тимур Ахметзянов on 22.02.2024.
 //
 
-#include "../include/TuringM.h"
+#include "../include/App.h"
 
-TuringM::TuringM() {
+App::App() {
   window_ = new QMainWindow();
   window_->setWindowFlags(Qt::FramelessWindowHint);
   window_->setFixedSize(width, height);
@@ -15,17 +15,17 @@ TuringM::TuringM() {
   turing_head_->setFixedSize(700, 800);
   turing_head_->move(380, 0);
   turing_head_->setStyleSheet("QWidget { background: url(../img/turing.png);"
-                             "background-position: center center;"
-                             "background-repeat: no-repeat; }");
+                              "background-position: center center;"
+                              "background-repeat: no-repeat; }");
 
   exit_btn_ = new QPushButton(window_);
   exit_btn_->resize(40, 40);
   exit_btn_->move(705, 20);
   exit_btn_->setStyleSheet("QPushButton { background: transparent;"
-                                        "border: 2px solid red;"
-                                        "border-radius: 20px;"
-                                        "color: red;"
-                                        "font-size: 30px }");
+                           "border: 2px solid red;"
+                           "border-radius: 20px;"
+                           "color: red;"
+                           "font-size: 30px }");
   exit_btn_->setText("X");
   connect(exit_btn_, SIGNAL(released()), this, SLOT(exit()));
 
@@ -47,8 +47,8 @@ TuringM::TuringM() {
   open_left_controller_->resize(50, 45);
   open_left_controller_->move(395, 353);
   open_left_controller_->setStyleSheet("QPushButton { background: transparent;"
-                                                    "color: #184c01;"
-                                                    "font-size: 45px; } ");
+                                       "color: #184c01;"
+                                       "font-size: 45px; } ");
   open_left_controller_->setText("<");
   connect(open_left_controller_, SIGNAL(released()), this, SLOT(editLeftCont()));
 
@@ -57,8 +57,8 @@ TuringM::TuringM() {
   tape_alphabet_edit_->resize(170, 45);
   tape_alphabet_edit_->move(180, 210);
   tape_alphabet_edit_->setStyleSheet("QLineEdit { padding-left: 5px; "
-                                                  "font-size: 25px;"
-                                                  "background: #9ea3a2; }");
+                                     "font-size: 25px;"
+                                     "background: #9ea3a2; }");
   tape_alphabet_edit_->setPlaceholderText("Tape's");
   tape_alphabet_edit_->setDisabled(true);
   tape_alphabet_edit_->hide();
@@ -67,8 +67,8 @@ TuringM::TuringM() {
   heads_alphabet_edit_->resize(170, 45);
   heads_alphabet_edit_->move(180, 265);
   heads_alphabet_edit_->setStyleSheet("QLineEdit { padding-left: 5px; "
-                                                  "font-size: 25px;"
-                                                  "background: #9ea3a2; }");
+                                      "font-size: 25px;"
+                                      "background: #9ea3a2; }");
   heads_alphabet_edit_->setPlaceholderText("Head's");
   heads_alphabet_edit_->setDisabled(true);
   heads_alphabet_edit_->hide();
@@ -77,8 +77,8 @@ TuringM::TuringM() {
   confirm_alphabets_->resize(100, 50);
   confirm_alphabets_->move(365, 210);
   confirm_alphabets_->setStyleSheet("QPushButton { background: #9ea3a2;"
-                                                  "border-radius: 10px;"
-                                                  "font-size: 20px }");
+                                    "border-radius: 10px;"
+                                    "font-size: 20px }");
   confirm_alphabets_->setText("Confirm");
   confirm_alphabets_->setDisabled(true);
   confirm_alphabets_->hide();
@@ -102,15 +102,15 @@ TuringM::TuringM() {
   open_right_controller_->resize(50, 45);
   open_right_controller_->move(1020, 353);
   open_right_controller_->setStyleSheet("QPushButton { background: transparent;"
-                                      "color: #184C01;"
-                                      "font-size: 45px; } ");
+                                        "color: #184C01;"
+                                        "font-size: 45px; } ");
   open_right_controller_->setText(">");
   connect(open_right_controller_, SIGNAL(released()), this, SLOT(editRightCont()));
 
   window_->show();
 }
 
-void TuringM::editLeftCont() {
+void App::editLeftCont() {
   if (left_opened_) {
     left_controller_->hide();
     left_controller_->move(close_cont_left_x_, close_cont_left_y_);
@@ -127,7 +127,7 @@ void TuringM::editLeftCont() {
   left_opened_ = !left_opened_;
 }
 
-void TuringM::editRightCont() {
+void App::editRightCont() {
   if (right_opened_) {
     right_controller_->hide();
     right_controller_->move(close_cont_right_x_, close_cont_right_y_);
@@ -144,11 +144,11 @@ void TuringM::editRightCont() {
   right_opened_ = !right_opened_;
 }
 
-void TuringM::exit() {
+void App::exit() {
   std::exit(0);
 }
 
-void TuringM::closeLeftElms() {
+void App::closeLeftElms() {
   tape_alphabet_edit_->setDisabled(true);
   tape_alphabet_edit_->hide();
   heads_alphabet_edit_->setDisabled(true);
@@ -158,7 +158,7 @@ void TuringM::closeLeftElms() {
   open_left_controller_->setText(">");
 }
 
-void TuringM::openLeftElms() {
+void App::openLeftElms() {
   tape_alphabet_edit_->setDisabled(false);
   tape_alphabet_edit_->show();
   heads_alphabet_edit_->setDisabled(false);
@@ -168,16 +168,7 @@ void TuringM::openLeftElms() {
   open_left_controller_->setText("<");
 }
 
-void TuringM::confirmAlphabets() {
+void App::confirmAlphabets() {
   std::string tape = tape_alphabet_edit_->text().toStdString();
   std::string head = heads_alphabet_edit_->text().toStdString();
-
-  tapes_alphabet_.clear();
-  heads_alphabet_.clear();
-  for (char c : tape) {
-    tapes_alphabet_.push_back(c);
-  }
-  for (char c : head) {
-    heads_alphabet_.push_back(c);
-  }
 }

@@ -4,14 +4,15 @@
 
 #pragma once
 
+#include "Turing.h"
 #include "header.h"
 
 
-class TuringM : QMainWindow {
+class App : QMainWindow {
  Q_OBJECT
 
  public:
-  TuringM();
+  App();
 
  private slots:
   void editLeftCont();
@@ -35,7 +36,7 @@ class TuringM : QMainWindow {
   bool left_opened_ = false;
   bool right_opened_ = false;
 
-  std::vector<char> heads_alphabet_, tapes_alphabet_;
+  Turing turing;
 
   QMainWindow* window_;
 
