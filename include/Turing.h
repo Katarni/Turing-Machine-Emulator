@@ -8,11 +8,12 @@ class Turing {
  public:
   Turing();
 
-  void changeAlphabets(const std::string &new_tape, const std::string &new_head);
+  void changeAlphabets(std::string &new_tape, std::string &new_head);
 
   void updateTable(bool clean);
 
  private:
+  int lambda_pos = 1;
   std::vector<char> tape;
 
   std::string heads_alphabet_, tapes_alphabet_;
