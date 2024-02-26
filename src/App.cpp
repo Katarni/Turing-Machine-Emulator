@@ -224,9 +224,9 @@ void App::confirmAlphabets() {
 void App::updateTable() {
   if (right_opened_) closeRightElms();
 
-  for (int i = 0; i < cells_.size(); ++i) {
-    for (int j = 0; j < cells_[i].size(); ++j) {
-      delete cells_[i][j];
+  for (auto & row : cells_) {
+    for (auto & cell : row) {
+      delete cell;
     }
   }
 

@@ -56,7 +56,7 @@ void Turing::updateTable(bool clean) {
   }
 
   std::unordered_set<char> letters;
-  for (char c : tapes_alphabet_) letters.insert(c);
+  for (const char& c : tapes_alphabet_) letters.insert(c);
 
   for (int i = 1; i < lambda_pos; ++i) {
     letters.erase(table_[0][i][0]);
@@ -69,13 +69,13 @@ void Turing::updateTable(bool clean) {
     }
   }
 
-  for (char c : letters) {
+  for (const char& c : letters) {
     table_[0][lambda_pos] = c;
     ++lambda_pos;
   }
 
   letters.clear();
-  for (char c : heads_alphabet_) letters.insert(c);
+  for (const char& c : heads_alphabet_) letters.insert(c);
 
   for (int i = lambda_pos + 1; i < table_[0].size(); ++i) {
     letters.erase(table_[0][i][0]);
@@ -85,9 +85,9 @@ void Turing::updateTable(bool clean) {
     row.resize(row.size() + letters.size());
   }
 
-  int i = lambda_pos + 1;
-  for (char c : letters) {
-    table_[0][i++] = c;
+  int j = (int)table_[0].size() - (int)letters.size();
+  for (const char& c : letters) {
+    table_[0][j++] = c;
   }
 }
 
