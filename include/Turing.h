@@ -17,8 +17,9 @@ class Turing {
   void setTable(const std::vector<std::vector<std::string>> &table);
 
  private:
-  int lambda_pos = 1;
-  std::vector<char> tape;
+  int lambda_pos_ = 1;
+  int crt_pos_;
+  std::vector<char> tape_;
 
   std::string heads_alphabet_, tapes_alphabet_;
   std::vector<std::vector<std::string>> table_;

@@ -19,13 +19,13 @@ App::App() {
                               "background-repeat: no-repeat; }");
 
   exit_btn_ = new QPushButton(window_);
-  exit_btn_->resize(40, 40);
-  exit_btn_->move(705, 20);
-  exit_btn_->setStyleSheet("QPushButton { background: transparent;"
-                           "border: 2px solid black;"
-                           "border-radius: 20px;"
-                           "color: black;"
-                           "font-size: 30px }");
+  exit_btn_->resize(30, 30);
+  exit_btn_->move(710, 20);
+  exit_btn_->setStyleSheet("QPushButton { background: #7d5100;"
+                           "border: 2px solid #e9ca5e;"
+                           "border-radius: 15px;"
+                           "color: #e9ca5e;"
+                           "font-size: 20px }");
   exit_btn_->setText("X");
   connect(exit_btn_, SIGNAL(released()), this, SLOT(exit()));
 

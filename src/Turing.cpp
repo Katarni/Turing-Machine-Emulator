@@ -5,7 +5,7 @@
 #include "../include/Turing.h"
 
 Turing::Turing() {
-  tape.resize(1e6, -1);
+  tape_.resize(1e6, -1);
   heads_alphabet_ = "";
   tapes_alphabet_ = "";
   table_.resize(1);
@@ -43,14 +43,14 @@ void Turing::updateTable(bool clean) {
   if (clean) {
     table_.resize(1);
     table_[0].resize(2 + heads_alphabet_.size() + tapes_alphabet_.size());
-    lambda_pos = 1 + (int)tapes_alphabet_.size();
-    for (int i = 1; i < lambda_pos; ++i) {
+    lambda_pos_ = 1 + (int)tapes_alphabet_.size();
+    for (int i = 1; i < lambda_pos_; ++i) {
       table_[0][i] = tapes_alphabet_[i - 1];
     }
 
-    table_[0][lambda_pos] = "/\\";
-    for (int i = lambda_pos + 1; i < table_[0].size(); ++i) {
-      table_[0][i] = heads_alphabet_[i - lambda_pos - 1];
+    table_[0][lambda_pos_] = "/\\";
+    for (int i = lambda_pos_ + 1; i < table_[0].size(); ++i) {
+      table_[0][i] = heads_alphabet_[i - lambda_pos_ - 1];
     }
     return;
   }
@@ -58,26 +58,26 @@ void Turing::updateTable(bool clean) {
   std::unordered_set<char> letters;
   for (const char& c : tapes_alphabet_) letters.insert(c);
 
-  for (int i = 1; i < lambda_pos; ++i) {
+  for (int i = 1; i < lambda_pos_; ++i) {
     letters.erase(table_[0][i][0]);
   }
 
   for (auto& row : table_) {
     row.resize(row.size() + letters.size());
-    for (int j = (int)row.size() - (int)letters.size() - 1; j >= lambda_pos; --j) {
+    for (int j = (int)row.size() - (int)letters.size() - 1; j >= lambda_pos_; --j) {
       row[j + letters.size()] = row[j];
     }
   }
 
   for (const char& c : letters) {
-    table_[0][lambda_pos] = c;
-    ++lambda_pos;
+    table_[0][lambda_pos_] = c;
+    ++lambda_pos_;
   }
 
   letters.clear();
   for (const char& c : heads_alphabet_) letters.insert(c);
 
-  for (int i = lambda_pos + 1; i < table_[0].size(); ++i) {
+  for (int i = lambda_pos_ + 1; i < table_[0].size(); ++i) {
     letters.erase(table_[0][i][0]);
   }
 
