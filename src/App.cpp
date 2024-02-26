@@ -256,6 +256,8 @@ void App::confirmAlphabets() {
   auto tape = tape_alphabet_edit_->text().toStdString();
   auto head = heads_alphabet_edit_->text().toStdString();
 
+  backupTable();
+
   if (!turing_.changeAlphabets(tape, head)) {
     tape_alphabet_edit_->setText("incorrect");
     heads_alphabet_edit_->setText("incorrect");
@@ -269,8 +271,8 @@ void App::confirmAlphabets() {
 void App::updateTable() {
   if (right_opened_) closeRightElms();
 
-  for (auto & row : cells_) {
-    for (auto & cell : row) {
+  for (auto &row: cells_) {
+    for (auto &cell: row) {
       delete cell;
     }
   }
@@ -280,7 +282,7 @@ void App::updateTable() {
   for (int i = 0; i < cells_.size(); ++i) {
     cells_[i].resize(turing_(i).size());
     for (int j = 0; j < cells_[i].size(); ++j) {
-      cells_[i][j] = new QLabel(table_label_);
+      cells_[i][j] = new QLineEdit(table_label_);
       cells_[i][j]->resize(cell_width_, cell_height_);
       cells_[i][j]->move(cell_width_ * j, cell_height_ * i);
       cells_[i][j]->setAlignment(Qt::AlignCenter);
@@ -291,6 +293,14 @@ void App::updateTable() {
     }
   }
 
+  for (auto & cell : cells_) {
+    cell[0]->setReadOnly(true);
+  }
+
+  for (auto & i : cells_[0]) {
+    i->setReadOnly(true);
+  }
+
   table_label_->resize((int)cells_[0].size() * cell_width_,
                        (int)cells_.size() * cell_height_);
 
@@ -298,11 +308,21 @@ void App::updateTable() {
 }
 
 void App::addRow() {
+  backupTable();
   turing_.addRow();
   updateTable();
 }
 
 void App::deleteRow() {
+  backupTable();
   turing_.deleteRow();
   updateTable();
+}
+
+void App::backupTable() {
+  for (int i = 1; i < turing_.size(); ++i) {
+    for (int j = 1; j < turing_(i).size(); ++j) {
+      turing_(i, j) = cells_[i][j]->text().toStdString();
+    }
+  }
 }

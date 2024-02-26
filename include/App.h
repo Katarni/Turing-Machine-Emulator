@@ -60,10 +60,9 @@ class App : QMainWindow {
 
   QLineEdit* tape_alphabet_edit_;
   QLineEdit* heads_alphabet_edit_;
-  std::vector<std::vector<QLineEdit*>> lines_edits_;
 
   QLabel* table_label_;
-  std::vector<std::vector<QLabel*>> cells_;
+  std::vector<std::vector<QLineEdit*>> cells_;
 
   QScrollArea* table_scroll_area_;
 
@@ -73,4 +72,6 @@ class App : QMainWindow {
   void openRightElms();
 
   void updateTable();
+
+  void backupTable();
 };
