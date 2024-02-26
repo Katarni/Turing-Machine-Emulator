@@ -5,7 +5,8 @@
 #include "../include/Turing.h"
 
 Turing::Turing() {
-  tape_.resize(1e6, -1);
+  tape_.resize(1e5, -1);
+  crt_pos_ = 1e5 / 2;
   heads_alphabet_ = "";
   tapes_alphabet_ = "";
   table_.resize(1);
@@ -97,4 +98,20 @@ const std::vector<std::vector<std::string>> &Turing::getTable() const {
 
 void Turing::setTable(const std::vector<std::vector<std::string>> &table) {
   table_ = table;
+}
+
+std::string &Turing::operator()(int i, int j) {
+  return table_[i][j];
+}
+
+const std::string &Turing::operator()(int i, int j) const {
+  return table_[i][j];
+}
+
+std::vector<std::string> &Turing::operator()(int i) {
+  return table_[i];
+}
+
+const std::vector<std::string> &Turing::operator()(int i) const {
+  return table_[i];
 }

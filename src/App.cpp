@@ -230,16 +230,16 @@ void App::updateTable() {
     }
   }
 
-  cells_.resize(turing_.getTable().size());
+  cells_.resize(turing_.size());
 
   for (int i = 0; i < cells_.size(); ++i) {
-    cells_[i].resize(turing_.getTable()[i].size());
+    cells_[i].resize(turing_(i).size());
     for (int j = 0; j < cells_[i].size(); ++j) {
       cells_[i][j] = new QLabel(table_label_);
       cells_[i][j]->resize(cell_width_, cell_height_);
       cells_[i][j]->move(cell_width_ * j, cell_height_ * i);
       cells_[i][j]->setAlignment(Qt::AlignCenter);
-      cells_[i][j]->setText(QString::fromStdString(turing_.getTable()[i][j]));
+      cells_[i][j]->setText(QString::fromStdString(turing_(i, j)));
       cells_[i][j]->setStyleSheet("QLabel { border: 1px solid #000;"
                                   "background: #fff;"
                                   "color: #000; }");

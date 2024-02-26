@@ -16,6 +16,16 @@ class Turing {
 
   void setTable(const std::vector<std::vector<std::string>> &table);
 
+  std::string& operator()(int i, int j);
+  const std::string& operator()(int i, int j) const;
+
+  std::vector<std::string>& operator()(int i);
+  const std::vector<std::string>& operator()(int i) const;
+
+  const size_t size() const {
+    return table_.size();
+  }
+
  private:
   int lambda_pos_ = 1;
   int crt_pos_;
