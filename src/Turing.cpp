@@ -12,6 +12,7 @@ Turing::Turing() {
   table_.resize(1);
   table_[0].resize(2);
   table_[0][1] = "/\\";
+  addRow();
 }
 
 bool Turing::changeAlphabets(std::string &new_tape, std::string &new_head) {
@@ -123,7 +124,7 @@ void Turing::addRow() {
 }
 
 void Turing::deleteRow() {
-  if (table_.size() == 1) return;
+  if (table_.size() <= 2) return;
 
   table_.resize(table_.size() - 1);
 }

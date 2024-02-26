@@ -140,11 +140,11 @@ App::App() {
   add_row_btn_->move(975, 458);
   add_row_btn_->setText("+");
   add_row_btn_->setStyleSheet("QPushButton { background: #9ea3a2; "
-                              "color: #fff;"
-                              "border-radius: 5px;"
-                              "font-size: 25px;"
-                              "padding-bottom: 3px;"
-                              "text-align: center; }"
+                                            "color: #fff;"
+                                            "border-radius: 5px;"
+                                            "font-size: 25px;"
+                                            "padding-bottom: 3px;"
+                                            "text-align: center; }"
                               "QPushButton:pressed { margin: 2px 2px 2px 2px; }");
   connect(add_row_btn_, SIGNAL(released()), this, SLOT(addRow()));
   add_row_btn_->setDisabled(true);
@@ -155,12 +155,12 @@ App::App() {
   delete_row_btn_->move(1022, 458);
   delete_row_btn_->setText("-");
   delete_row_btn_->setStyleSheet("QPushButton { background: #9ea3a2; "
-                              "color: #fff;"
-                              "border-radius: 5px;"
-                              "font-size: 25px;"
-                              "padding-bottom: 3px;"
-                              "text-align: center; }"
-                              "QPushButton:pressed { margin: 2px 2px 2px 2px; }");
+                                                "color: #fff;"
+                                                "border-radius: 5px;"
+                                                "font-size: 25px;"
+                                                "padding-bottom: 3px;"
+                                                "text-align: center; }"
+                                  "QPushButton:pressed { margin: 2px 2px 2px 2px; }");
   connect(delete_row_btn_, SIGNAL(released()), this, SLOT(deleteRow()));
   delete_row_btn_->setDisabled(true);
   delete_row_btn_->hide();
