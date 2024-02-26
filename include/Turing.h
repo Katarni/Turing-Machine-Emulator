@@ -22,9 +22,12 @@ class Turing {
   std::vector<std::string>& operator()(int i);
   const std::vector<std::string>& operator()(int i) const;
 
-  const size_t size() const {
+  const size_t& size() const {
     return table_.size();
   }
+
+  void addRow();
+  void deleteRow();
 
  private:
   int lambda_pos_ = 1;

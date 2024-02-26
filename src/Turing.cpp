@@ -115,3 +115,15 @@ std::vector<std::string> &Turing::operator()(int i) {
 const std::vector<std::string> &Turing::operator()(int i) const {
   return table_[i];
 }
+
+void Turing::addRow() {
+  table_.resize(table_.size() + 1);
+  table_.back().resize(table_[0].size());
+  table_.back()[0] = "q" + std::to_string(table_.size() - 2);
+}
+
+void Turing::deleteRow() {
+  if (table_.size() == 1) return;
+
+  table_.resize(table_.size() - 1);
+}

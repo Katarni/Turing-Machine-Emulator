@@ -22,6 +22,9 @@ class App : QMainWindow {
 
   void confirmAlphabets();
 
+  void addRow();
+  void deleteRow();
+
  private:
   const int cell_width_ = 70, cell_height_ = 40;
   const int width = 1500, height = 800;
@@ -48,13 +51,16 @@ class App : QMainWindow {
   QWidget* right_ear_;
   QWidget* right_controller_;
 
-  QPushButton* open_left_controller_;
-  QPushButton* open_right_controller_;
+  QPushButton* open_left_controller_btn_;
+  QPushButton* open_right_controller_btn_;
   QPushButton* exit_btn_;
-  QPushButton* confirm_alphabets_;
+  QPushButton* confirm_alphabets_btn_;
+  QPushButton* add_row_btn_;
+  QPushButton* delete_row_btn_;
 
   QLineEdit* tape_alphabet_edit_;
   QLineEdit* heads_alphabet_edit_;
+  std::vector<std::vector<QLineEdit*>> lines_edits_;
 
   QLabel* table_label_;
   std::vector<std::vector<QLabel*>> cells_;
