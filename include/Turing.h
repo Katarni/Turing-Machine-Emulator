@@ -29,7 +29,7 @@ class Turing {
 
   void setWord(const std::string& word);
 
-  const int& getCurrentPos() {
+  const int& getCurrentPos() const {
     return crt_pos_;
   }
 

@@ -57,9 +57,11 @@ class App : QMainWindow {
   QPushButton* confirm_alphabets_btn_;
   QPushButton* add_row_btn_;
   QPushButton* delete_row_btn_;
+  QPushButton* set_word_btn_;
 
   QLineEdit* tape_alphabet_edit_;
   QLineEdit* heads_alphabet_edit_;
+  QLineEdit* word_edit_;
 
   QLabel* table_label_;
   std::vector<std::vector<QLineEdit*>> cells_;

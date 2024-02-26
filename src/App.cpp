@@ -53,6 +53,29 @@ App::App() {
   open_left_controller_btn_->setText("<");
   connect(open_left_controller_btn_, SIGNAL(released()), this, SLOT(editLeftCont()));
 
+  word_edit_ = new QLineEdit(window_);
+  word_edit_->resize(300, 45);
+  word_edit_->move(180, 330);
+  word_edit_->setStyleSheet("QLineEdit { padding-left: 5px; "
+                                        "font-size: 25px;"
+                                        "background: #9ea3a2; }"
+                                        "QLineEdit[text=\"\"] { color: #fff; }");
+  word_edit_->setPlaceholderText("Word");
+  word_edit_->hide();
+  word_edit_->setDisabled(true);
+
+  set_word_btn_ = new QPushButton(window_);
+  set_word_btn_->resize(75, 45);
+  set_word_btn_->move(180, 390);
+  set_word_btn_->setStyleSheet("QPushButton { background: #9ea3a2;"
+                                             "border-radius: 10px;"
+                                             "font-size: 20px;"
+                                             "color: #fff; }"
+                               "QPushButton:pressed { margin: 2px 2px 2px 2px; }");
+  set_word_btn_->setText("Set");
+  set_word_btn_->setDisabled(true);
+  set_word_btn_->hide();
+
   //// Alphabets
   tape_alphabet_edit_ = new QLineEdit(window_);
   tape_alphabet_edit_->resize(170, 45);
@@ -83,7 +106,7 @@ App::App() {
                                                   "border-radius: 10px;"
                                                   "font-size: 20px;"
                                                   "color: #fff; }"
-                                    "QPushButton:pressed { margin: 3px 3px 3px 3px; }");
+                                        "QPushButton:pressed { margin: 2px 2px 2px 2px; }");
   confirm_alphabets_btn_->setText("Confirm");
   confirm_alphabets_btn_->setDisabled(true);
   confirm_alphabets_btn_->hide();
@@ -216,6 +239,10 @@ void App::closeLeftElms() {
   confirm_alphabets_btn_->hide();
   heads_alphabet_edit_->hide();
   open_left_controller_btn_->setText("<");
+  word_edit_->hide();
+  word_edit_->setDisabled(true);
+  set_word_btn_->hide();
+  set_word_btn_->setDisabled(true);
 }
 
 void App::openLeftElms() {
@@ -226,6 +253,10 @@ void App::openLeftElms() {
   confirm_alphabets_btn_->show();
   heads_alphabet_edit_->show();
   open_left_controller_btn_->setText(">");
+  word_edit_->show();
+  word_edit_->setDisabled(!set_alphabets);
+  set_word_btn_->show();
+  set_word_btn_->setDisabled(!set_alphabets);
 }
 
 void App::closeRightElms() {
@@ -305,6 +336,7 @@ void App::updateTable() {
                        (int)cells_.size() * cell_height_);
 
   if (right_opened_) openRightElms();
+  if (left_opened_) openLeftElms();
 }
 
 void App::addRow() {
