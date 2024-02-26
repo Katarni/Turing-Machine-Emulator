@@ -23,6 +23,7 @@ class App : QMainWindow {
   void confirmAlphabets();
 
  private:
+  const int cell_width_ = 70, cell_height_ = 40;
   const int width = 1500, height = 800;
   const int close_ear_left_x_ = 370, close_ear_left_y_ = 150;
   const int open_ear_left_x_ = -8, open_ear_left_y_ = 150;
@@ -37,7 +38,7 @@ class App : QMainWindow {
   bool right_opened_ = false;
   bool set_alphabets = false;
 
-  Turing turing;
+  Turing turing_;
 
   QMainWindow* window_;
 
@@ -55,7 +56,10 @@ class App : QMainWindow {
   QLineEdit* tape_alphabet_edit_;
   QLineEdit* heads_alphabet_edit_;
 
-  QTableWidget* table_;
+  QLabel* table_label_;
+  std::vector<std::vector<QLabel*>> cells_;
+
+  QScrollArea* table_scroll_area_;
 
   void closeLeftElms();
   void openLeftElms();

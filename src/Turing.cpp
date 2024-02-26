@@ -90,3 +90,11 @@ void Turing::updateTable(bool clean) {
     table_[0][i++] = c;
   }
 }
+
+const std::vector<std::vector<std::string>> &Turing::getTable() const {
+  return table_;
+}
+
+void Turing::setTable(const std::vector<std::vector<std::string>> &table) {
+  table_ = table;
+}

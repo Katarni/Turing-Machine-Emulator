@@ -108,12 +108,26 @@ App::App() {
   connect(open_right_controller_, SIGNAL(released()), this, SLOT(editRightCont()));
 
   //// Table
-  table_ = new QTableWidget(window_);
-  table_->resize(308, 285);
-  table_->move(975, 205);
-  table_->setStyleSheet("QTableWidget { background: #9ea3a2; }");
-  table_->hide();
-  table_->setDisabled(true);
+  cells_.resize(turing_.getTable().size());
+
+  table_label_ = new QLabel(window_);
+  table_label_->resize((int)cells_[0].size() * cell_width_,
+                       (int)cells_.size() * cell_height_);
+  table_label_->move(975, 205);
+  table_label_->setStyleSheet("QTableWidget { background: #9ea3a2; }");
+  table_label_->hide();
+  table_label_->setDisabled(true);
+
+  table_scroll_area_ = new QScrollArea(window_);
+  table_scroll_area_->resize(308, 285);
+  table_scroll_area_->move(975, 205);
+  table_scroll_area_->setWidget(table_label_);
+  table_scroll_area_->setStyleSheet("QScrollArea QScrollBar::handle { background: #ebd7f5;"
+                                    "border-radius: 8px; }"
+                                    "QScrollArea QScrollBar { background: #fff; }");
+  table_scroll_area_->setDisabled(true);
+  table_scroll_area_->hide();
+
   updateTable();
 
   window_->show();
@@ -179,21 +193,25 @@ void App::openLeftElms() {
 
 void App::closeRightElms() {
   open_right_controller_->setText(">");
-  table_->hide();
-  table_->setDisabled(true);
+  table_label_->hide();
+  table_label_->setDisabled(true);
+  table_scroll_area_->setDisabled(true);
+  table_scroll_area_->hide();
 }
 
 void App::openRightElms() {
   open_right_controller_->setText("<");
-  table_->show();
-  table_->setEnabled(set_alphabets);
+  table_label_->show();
+  table_label_->setDisabled(!set_alphabets);
+  table_scroll_area_->setDisabled(!set_alphabets);
+  table_scroll_area_->show();
 }
 
 void App::confirmAlphabets() {
   auto tape = tape_alphabet_edit_->text().toStdString();
   auto head = heads_alphabet_edit_->text().toStdString();
 
-  if (!turing.changeAlphabets(tape, head)) {
+  if (!turing_.changeAlphabets(tape, head)) {
     tape_alphabet_edit_->setText("incorrect");
     heads_alphabet_edit_->setText("incorrect");
     return;
@@ -204,5 +222,32 @@ void App::confirmAlphabets() {
 }
 
 void App::updateTable() {
+  if (right_opened_) closeRightElms();
 
+  for (int i = 0; i < cells_.size(); ++i) {
+    for (int j = 0; j < cells_[i].size(); ++j) {
+      delete cells_[i][j];
+    }
+  }
+
+  cells_.resize(turing_.getTable().size());
+
+  for (int i = 0; i < cells_.size(); ++i) {
+    cells_[i].resize(turing_.getTable()[i].size());
+    for (int j = 0; j < cells_[i].size(); ++j) {
+      cells_[i][j] = new QLabel(table_label_);
+      cells_[i][j]->resize(cell_width_, cell_height_);
+      cells_[i][j]->move(cell_width_ * j, cell_height_ * i);
+      cells_[i][j]->setAlignment(Qt::AlignCenter);
+      cells_[i][j]->setText(QString::fromStdString(turing_.getTable()[i][j]));
+      cells_[i][j]->setStyleSheet("QLabel { border: 1px solid #000;"
+                                  "background: #fff;"
+                                  "color: #000; }");
+    }
+  }
+
+  table_label_->resize((int)cells_[0].size() * cell_width_,
+                       (int)cells_.size() * cell_height_);
+
+  if (right_opened_) openRightElms();
 }

@@ -12,6 +12,10 @@ class Turing {
 
   void updateTable(bool clean);
 
+  const std::vector<std::vector<std::string>> &getTable() const;
+
+  void setTable(const std::vector<std::vector<std::string>> &table);
+
  private:
   int lambda_pos = 1;
   std::vector<char> tape;
