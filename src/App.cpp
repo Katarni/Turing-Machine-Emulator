@@ -75,6 +75,7 @@ App::App() {
   set_word_btn_->setText("Set");
   set_word_btn_->setDisabled(true);
   set_word_btn_->hide();
+  connect(set_word_btn_, SIGNAL(released()), this, SLOT(setWord()));
 
   //// Alphabets
   tape_alphabet_edit_ = new QLineEdit(window_);
@@ -356,5 +357,14 @@ void App::backupTable() {
     for (int j = 1; j < turing_(i).size(); ++j) {
       turing_(i, j) = cells_[i][j]->text().toStdString();
     }
+  }
+}
+
+void App::setWord() {
+  std::string word = word_edit_->text().toStdString();
+
+  if (!turing_.setWord(word)) {
+    word_edit_->setText("incorrect");
+    return;
   }
 }

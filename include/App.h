@@ -25,6 +25,8 @@ class App : QMainWindow {
   void addRow();
   void deleteRow();
 
+  void setWord();
+
  private:
   const int cell_width_ = 70, cell_height_ = 40;
   const int width = 1500, height = 800;
@@ -64,6 +66,7 @@ class App : QMainWindow {
   QLineEdit* word_edit_;
 
   QLabel* table_label_;
+  QLabel* curr_word_ldl_;
   std::vector<std::vector<QLineEdit*>> cells_;
 
   QScrollArea* table_scroll_area_;

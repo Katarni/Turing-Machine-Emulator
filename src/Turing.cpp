@@ -6,7 +6,6 @@
 
 Turing::Turing() {
   tape_.resize(1e4, -1);
-  crt_pos_ = 5e3;
   heads_alphabet_ = "";
   tapes_alphabet_ = "";
   table_.resize(1);
@@ -125,14 +124,48 @@ void Turing::deleteRow() {
   table_.resize(table_.size() - 1);
 }
 
-void Turing::setWord(const std::string &word) {
+bool Turing::setWord(const std::string &word) {
   // проверить на корректность
 
   for (char & letter : tape_) {
     letter = -1;
   }
-  crt_pos_ = 5e3;
-  for (int i = crt_pos_; i < crt_pos_ + word.size(); ++i) {
-    tape_[i] = word[i - crt_pos_];
+  curr_pos_ = 5e3;
+  for (int i = curr_pos_; i < curr_pos_ + word.size(); ++i) {
+    tape_[i] = word[i - curr_pos_];
   }
+
+  start_word_ = word;
+
+  return true;
+}
+
+const std::string &Turing::getCurrWord() {
+  int start = -1, end = -1;
+  for (int i = 0; i < tape_.size(); ++i) {
+    if (tape_[i] != -1 && start == -1) {
+      start = i;
+    }
+    if (tape_[i] != -1) {
+      end = i + 1;
+    }
+  }
+
+  std::string word, space = "/\\";
+  for (int i = start; i < end; ++i) {
+    if (tape_[i] == -1) {
+      word.insert(word.end(), space.begin(), space.end());
+    } else {
+      word.push_back(tape_[i]);
+    }
+  }
+
+  return word;
+}
+
+const int &Turing::getCurrentPos() const  {
+  for (int i = 0; i < tape_.size(); ++i) {
+    if (tape_[i] != -1) return i;
+  }
+  return (int)tape_.size();
 }

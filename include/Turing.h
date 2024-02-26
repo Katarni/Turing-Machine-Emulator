@@ -27,17 +27,18 @@ class Turing {
   void addRow();
   void deleteRow();
 
-  void setWord(const std::string& word);
+  bool setWord(const std::string& word);
 
-  const int& getCurrentPos() const {
-    return crt_pos_;
-  }
+  const std::string& getCurrWord();
+
+  const int& getCurrentPos() const;
 
  private:
   int lambda_pos_ = 1;
-  int crt_pos_;
+  int curr_pos_ = 5e3;
+
   std::vector<char> tape_;
 
-  std::string heads_alphabet_, tapes_alphabet_;
+  std::string heads_alphabet_, tapes_alphabet_, start_word_;
   std::vector<std::vector<std::string>> table_;
 };
