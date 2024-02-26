@@ -14,8 +14,6 @@ class Turing {
 
   const std::vector<std::vector<std::string>> &getTable() const;
 
-  void setTable(const std::vector<std::vector<std::string>> &table);
-
   std::string& operator()(int i, int j);
   const std::string& operator()(int i, int j) const;
 
@@ -28,6 +26,12 @@ class Turing {
 
   void addRow();
   void deleteRow();
+
+  void setWord(const std::string& word);
+
+  const int& getCurrentPos() {
+    return crt_pos_;
+  }
 
  private:
   int lambda_pos_ = 1;

@@ -5,8 +5,8 @@
 #include "../include/Turing.h"
 
 Turing::Turing() {
-  tape_.resize(1e5, -1);
-  crt_pos_ = 1e5 / 2;
+  tape_.resize(1e4, -1);
+  crt_pos_ = 5e3;
   heads_alphabet_ = "";
   tapes_alphabet_ = "";
   table_.resize(1);
@@ -97,10 +97,6 @@ const std::vector<std::vector<std::string>> &Turing::getTable() const {
   return table_;
 }
 
-void Turing::setTable(const std::vector<std::vector<std::string>> &table) {
-  table_ = table;
-}
-
 std::string &Turing::operator()(int i, int j) {
   return table_[i][j];
 }
@@ -127,4 +123,16 @@ void Turing::deleteRow() {
   if (table_.size() <= 2) return;
 
   table_.resize(table_.size() - 1);
+}
+
+void Turing::setWord(const std::string &word) {
+  // проверить на корректность
+
+  for (char & letter : tape_) {
+    letter = -1;
+  }
+  crt_pos_ = 5e3;
+  for (int i = crt_pos_; i < crt_pos_ + word.size(); ++i) {
+    tape_[i] = word[i - crt_pos_];
+  }
 }
