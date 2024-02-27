@@ -17,7 +17,7 @@ Turing::Turing() {
 bool Turing::changeAlphabets(std::string &new_tape, std::string &new_head) {
   // проверить алфавиты на корректность
 
-  for (char c : tapes_alphabet_) {
+  for (char c: tapes_alphabet_) {
     if (new_tape.find(c) == std::string::npos) {
       tapes_alphabet_.swap(new_tape);
       heads_alphabet_.swap(new_head);
@@ -27,7 +27,7 @@ bool Turing::changeAlphabets(std::string &new_tape, std::string &new_head) {
   }
 
   tapes_alphabet_.swap(new_tape);
-  for (char c : heads_alphabet_) {
+  for (char c: heads_alphabet_) {
     if (new_head.find(c) == std::string::npos) {
       heads_alphabet_.swap(new_head);
       updateTable(true);
@@ -44,7 +44,7 @@ void Turing::updateTable(bool clean) {
   if (clean) {
     table_.resize(1);
     table_[0].resize(2 + heads_alphabet_.size() + tapes_alphabet_.size());
-    lambda_pos_ = 1 + (int)tapes_alphabet_.size();
+    lambda_pos_ = 1 + (int) tapes_alphabet_.size();
     for (int i = 1; i < lambda_pos_; ++i) {
       table_[0][i] = tapes_alphabet_[i - 1];
     }
@@ -57,37 +57,37 @@ void Turing::updateTable(bool clean) {
   }
 
   std::unordered_set<char> letters;
-  for (const char& c : tapes_alphabet_) letters.insert(c);
+  for (const char &c: tapes_alphabet_) letters.insert(c);
 
   for (int i = 1; i < lambda_pos_; ++i) {
     letters.erase(table_[0][i][0]);
   }
 
-  for (auto& row : table_) {
+  for (auto &row: table_) {
     row.resize(row.size() + letters.size());
-    for (int j = (int)row.size() - (int)letters.size() - 1; j >= lambda_pos_; --j) {
+    for (int j = (int) row.size() - (int) letters.size() - 1; j >= lambda_pos_; --j) {
       row[j + letters.size()] = row[j];
     }
   }
 
-  for (const char& c : letters) {
+  for (const char &c: letters) {
     table_[0][lambda_pos_] = c;
     ++lambda_pos_;
   }
 
   letters.clear();
-  for (const char& c : heads_alphabet_) letters.insert(c);
+  for (const char &c: heads_alphabet_) letters.insert(c);
 
   for (int i = lambda_pos_ + 1; i < table_[0].size(); ++i) {
     letters.erase(table_[0][i][0]);
   }
 
-  for (auto& row : table_) {
+  for (auto &row: table_) {
     row.resize(row.size() + letters.size());
   }
 
-  int j = (int)table_[0].size() - (int)letters.size();
-  for (const char& c : letters) {
+  int j = (int) table_[0].size() - (int) letters.size();
+  for (const char &c: letters) {
     table_[0][j++] = c;
   }
 }
@@ -127,7 +127,7 @@ void Turing::deleteRow() {
 bool Turing::setWord(const std::string &word) {
   // проверить на корректность
 
-  for (char & letter : tape_) {
+  for (char &letter: tape_) {
     letter = -1;
   }
   curr_pos_ = 5e3;
@@ -163,9 +163,13 @@ const std::string &Turing::getCurrWord() {
   return word;
 }
 
-const int &Turing::getCurrentPos() const  {
+const int &Turing::getCurrentPos() const {
   for (int i = 0; i < tape_.size(); ++i) {
     if (tape_[i] != -1) return i;
   }
-  return (int)tape_.size();
+  return (int) tape_.size();
+}
+
+void Turing::start() {
+  curr_pos_ = getCurrentPos();
 }

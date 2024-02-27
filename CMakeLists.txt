@@ -18,7 +18,8 @@ add_executable(TuringMachine main.cpp
         include/App.h
         include/header.h
         src/Turing.cpp
-        include/Turing.h)
+        include/Turing.h
+)
 target_link_libraries(TuringMachine
         Qt::Core
         Qt::Gui

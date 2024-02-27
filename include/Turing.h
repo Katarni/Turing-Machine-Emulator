@@ -14,24 +14,29 @@ class Turing {
 
   const std::vector<std::vector<std::string>> &getTable() const;
 
-  std::string& operator()(int i, int j);
-  const std::string& operator()(int i, int j) const;
+  std::string &operator()(int i, int j);
 
-  std::vector<std::string>& operator()(int i);
-  const std::vector<std::string>& operator()(int i) const;
+  const std::string &operator()(int i, int j) const;
 
-  const size_t& size() const {
+  std::vector<std::string> &operator()(int i);
+
+  const std::vector<std::string> &operator()(int i) const;
+
+  const size_t &size() const {
     return table_.size();
   }
 
   void addRow();
+
   void deleteRow();
 
-  bool setWord(const std::string& word);
+  bool setWord(const std::string &word);
 
-  const std::string& getCurrWord();
+  const std::string &getCurrWord();
 
-  const int& getCurrentPos() const;
+  const int &getCurrentPos() const;
+
+  void start();
 
  private:
   int lambda_pos_ = 1;

@@ -11,6 +11,7 @@
 #include <unordered_set>
 #include <thread>
 #include <chrono>
+#include <iostream>
 
 // qt
 #include <QMainWindow>
@@ -25,3 +26,4 @@
 #include <QTimer>
 #include <QTableWidget>
 #include <QLabel>
+#include <QThread>

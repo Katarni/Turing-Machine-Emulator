@@ -15,7 +15,9 @@ class App : QMainWindow {
   App();
 
  private slots:
+
   void editLeftCont();
+
   void editRightCont();
 
   static void exit();
@@ -23,12 +25,14 @@ class App : QMainWindow {
   void confirmAlphabets();
 
   void addRow();
+
   void deleteRow();
 
   void setWord();
 
  private:
-  const int cell_width_ = 70, cell_height_ = 40;
+  const int table_cell_width_ = 70, table_cell_height_ = 40;
+  const int tape_cell_width_ = 60, tape_cell_height_ = 60;
   const int width = 1500, height = 800;
   const int close_ear_left_x_ = 370, close_ear_left_y_ = 150;
   const int open_ear_left_x_ = -8, open_ear_left_y_ = 150;
@@ -41,39 +45,43 @@ class App : QMainWindow {
 
   bool left_opened_ = false;
   bool right_opened_ = false;
-  bool set_alphabets = false;
+  bool set_alphabets_ = false;
 
   Turing turing_;
 
-  QMainWindow* window_;
+  QMainWindow *window_;
 
-  QWidget* turing_head_;
-  QWidget* left_ear_;
-  QWidget* left_controller_;
-  QWidget* right_ear_;
-  QWidget* right_controller_;
+  QWidget *turing_head_;
+  QWidget *left_ear_;
+  QWidget *left_controller_;
+  QWidget *right_ear_;
+  QWidget *right_controller_;
 
-  QPushButton* open_left_controller_btn_;
-  QPushButton* open_right_controller_btn_;
-  QPushButton* exit_btn_;
-  QPushButton* confirm_alphabets_btn_;
-  QPushButton* add_row_btn_;
-  QPushButton* delete_row_btn_;
-  QPushButton* set_word_btn_;
+  QPushButton *open_left_controller_btn_;
+  QPushButton *open_right_controller_btn_;
+  QPushButton *exit_btn_;
+  QPushButton *confirm_alphabets_btn_;
+  QPushButton *add_row_btn_;
+  QPushButton *delete_row_btn_;
+  QPushButton *set_word_btn_;
 
-  QLineEdit* tape_alphabet_edit_;
-  QLineEdit* heads_alphabet_edit_;
-  QLineEdit* word_edit_;
+  QLineEdit *tape_alphabet_edit_;
+  QLineEdit *heads_alphabet_edit_;
+  QLineEdit *word_edit_;
+  std::vector<std::vector<QLineEdit *>> cells_;
 
-  QLabel* table_label_;
-  QLabel* curr_word_ldl_;
-  std::vector<std::vector<QLineEdit*>> cells_;
+  QLabel *table_label_;
+  QLabel *curr_word_ldl_;
+  std::vector<QLabel*> tape_;
 
-  QScrollArea* table_scroll_area_;
+  QScrollArea *table_scroll_area_;
 
   void closeLeftElms();
+
   void openLeftElms();
+
   void closeRightElms();
+
   void openRightElms();
 
   void updateTable();

@@ -15,17 +15,17 @@ App::App() {
   turing_head_->setFixedSize(700, 800);
   turing_head_->move(380, 0);
   turing_head_->setStyleSheet("QWidget { background: url(../img/turing.png);"
-                                        "background-position: center center;"
-                                        "background-repeat: no-repeat; }");
+                              "background-position: center center;"
+                              "background-repeat: no-repeat; }");
 
   exit_btn_ = new QPushButton(window_);
   exit_btn_->resize(30, 30);
   exit_btn_->move(710, 20);
   exit_btn_->setStyleSheet("QPushButton { background: #7d5100;"
-                                         "border: 2px solid #e9ca5e;"
-                                         "border-radius: 15px;"
-                                         "color: #e9ca5e;"
-                                         "font-size: 20px }"
+                           "border: 2px solid #e9ca5e;"
+                           "border-radius: 15px;"
+                           "color: #e9ca5e;"
+                           "font-size: 20px }"
                            "QPushButton:pressed { background: yellow; }");
   exit_btn_->setText("X");
   connect(exit_btn_, SIGNAL(released()), this, SLOT(exit()));
@@ -48,8 +48,8 @@ App::App() {
   open_left_controller_btn_->resize(50, 45);
   open_left_controller_btn_->move(395, 353);
   open_left_controller_btn_->setStyleSheet("QPushButton { background: transparent;"
-                                                     "color: #184c01;"
-                                                     "font-size: 45px; } ");
+                                           "color: #184c01;"
+                                           "font-size: 45px; } ");
   open_left_controller_btn_->setText("<");
   connect(open_left_controller_btn_, SIGNAL(released()), this, SLOT(editLeftCont()));
 
@@ -57,9 +57,9 @@ App::App() {
   word_edit_->resize(300, 45);
   word_edit_->move(180, 330);
   word_edit_->setStyleSheet("QLineEdit { padding-left: 5px; "
-                                        "font-size: 25px;"
-                                        "background: #9ea3a2; }"
-                                        "QLineEdit[text=\"\"] { color: #fff; }");
+                            "font-size: 25px;"
+                            "background: #9ea3a2; }"
+                            "QLineEdit[text=\"\"] { color: #fff; }");
   word_edit_->setPlaceholderText("Word");
   word_edit_->hide();
   word_edit_->setDisabled(true);
@@ -68,9 +68,9 @@ App::App() {
   set_word_btn_->resize(75, 45);
   set_word_btn_->move(180, 390);
   set_word_btn_->setStyleSheet("QPushButton { background: #9ea3a2;"
-                                             "border-radius: 10px;"
-                                             "font-size: 20px;"
-                                             "color: #fff; }"
+                               "border-radius: 10px;"
+                               "font-size: 20px;"
+                               "color: #fff; }"
                                "QPushButton:pressed { margin: 2px 2px 2px 2px; }");
   set_word_btn_->setText("Set");
   set_word_btn_->setDisabled(true);
@@ -82,8 +82,8 @@ App::App() {
   tape_alphabet_edit_->resize(170, 45);
   tape_alphabet_edit_->move(180, 210);
   tape_alphabet_edit_->setStyleSheet("QLineEdit { padding-left: 5px; "
-                                                 "font-size: 25px;"
-                                                 "background: #9ea3a2; }"
+                                     "font-size: 25px;"
+                                     "background: #9ea3a2; }"
                                      "QLineEdit[text=\"\"] { color: #fff; }");
   tape_alphabet_edit_->setPlaceholderText("Tape's");
   tape_alphabet_edit_->setDisabled(true);
@@ -93,8 +93,8 @@ App::App() {
   heads_alphabet_edit_->resize(170, 45);
   heads_alphabet_edit_->move(180, 265);
   heads_alphabet_edit_->setStyleSheet("QLineEdit { padding-left: 5px; "
-                                                  "font-size: 25px;"
-                                                  "background: #9ea3a2; }"
+                                      "font-size: 25px;"
+                                      "background: #9ea3a2; }"
                                       "QLineEdit[text=\"\"] { color: #fff; }");
   heads_alphabet_edit_->setPlaceholderText("Head's");
   heads_alphabet_edit_->setDisabled(true);
@@ -104,9 +104,9 @@ App::App() {
   confirm_alphabets_btn_->resize(100, 50);
   confirm_alphabets_btn_->move(365, 210);
   confirm_alphabets_btn_->setStyleSheet("QPushButton { background: #9ea3a2;"
-                                                  "border-radius: 10px;"
-                                                  "font-size: 20px;"
-                                                  "color: #fff; }"
+                                        "border-radius: 10px;"
+                                        "font-size: 20px;"
+                                        "color: #fff; }"
                                         "QPushButton:pressed { margin: 2px 2px 2px 2px; }");
   confirm_alphabets_btn_->setText("Confirm");
   confirm_alphabets_btn_->setDisabled(true);
@@ -131,8 +131,8 @@ App::App() {
   open_right_controller_btn_->resize(50, 45);
   open_right_controller_btn_->move(1020, 353);
   open_right_controller_btn_->setStyleSheet("QPushButton { background: transparent;"
-                                                      "color: #184c01;"
-                                                      "font-size: 45px; } ");
+                                            "color: #184c01;"
+                                            "font-size: 45px; } ");
   open_right_controller_btn_->setText(">");
   connect(open_right_controller_btn_, SIGNAL(released()), this, SLOT(editRightCont()));
 
@@ -140,8 +140,8 @@ App::App() {
   cells_.resize(turing_.getTable().size());
 
   table_label_ = new QLabel(window_);
-  table_label_->resize((int)cells_[0].size() * cell_width_,
-                       (int)cells_.size() * cell_height_);
+  table_label_->resize((int) cells_[0].size() * table_cell_width_,
+                       (int) cells_.size() * table_cell_height_);
   table_label_->move(975, 205);
   table_label_->setStyleSheet("QTableWidget { background: #9ea3a2; }");
   table_label_->hide();
@@ -152,9 +152,9 @@ App::App() {
   table_scroll_area_->move(975, 205);
   table_scroll_area_->setWidget(table_label_);
   table_scroll_area_->setStyleSheet("QScrollArea QScrollBar::handle { background: #fff;"
-                                                                      "border-radius: 8px; }"
+                                    "border-radius: 8px; }"
                                     "QScrollArea QScrollBar { background: #fff;"
-                                                              "border: 1px solid #9ea3a2; }"
+                                    "border: 1px solid #9ea3a2; }"
                                     "QScrollArea { background: #9ea3a2; }");
   table_scroll_area_->setDisabled(true);
   table_scroll_area_->hide();
@@ -164,11 +164,11 @@ App::App() {
   add_row_btn_->move(975, 458);
   add_row_btn_->setText("+");
   add_row_btn_->setStyleSheet("QPushButton { background: #9ea3a2; "
-                                            "color: #fff;"
-                                            "border-radius: 5px;"
-                                            "font-size: 25px;"
-                                            "padding-bottom: 3px;"
-                                            "text-align: center; }"
+                              "color: #fff;"
+                              "border-radius: 5px;"
+                              "font-size: 25px;"
+                              "padding-bottom: 3px;"
+                              "text-align: center; }"
                               "QPushButton:pressed { margin: 2px 2px 2px 2px; }");
   connect(add_row_btn_, SIGNAL(released()), this, SLOT(addRow()));
   add_row_btn_->setDisabled(true);
@@ -179,17 +179,26 @@ App::App() {
   delete_row_btn_->move(1022, 458);
   delete_row_btn_->setText("-");
   delete_row_btn_->setStyleSheet("QPushButton { background: #9ea3a2; "
-                                                "color: #fff;"
-                                                "border-radius: 5px;"
-                                                "font-size: 25px;"
-                                                "padding-bottom: 3px;"
-                                                "text-align: center; }"
-                                  "QPushButton:pressed { margin: 2px 2px 2px 2px; }");
+                                 "color: #fff;"
+                                 "border-radius: 5px;"
+                                 "font-size: 25px;"
+                                 "padding-bottom: 3px;"
+                                 "text-align: center; }"
+                                 "QPushButton:pressed { margin: 2px 2px 2px 2px; }");
   connect(delete_row_btn_, SIGNAL(released()), this, SLOT(deleteRow()));
   delete_row_btn_->setDisabled(true);
   delete_row_btn_->hide();
 
   updateTable();
+
+  //// Tape Window
+  tape_.resize(7);
+  for (int i = 0; i < 7; ++i) {
+    tape_[i] = new QLabel(turing_head_);
+    tape_[i]->resize(tape_cell_width_, tape_cell_height_);
+    tape_[i]->move(142 + tape_cell_width_ * i, 260);
+    tape_[i]->setStyleSheet("QLabel { border: 2px solid #fff; }");
+  }
 
   window_->show();
 }
@@ -255,9 +264,9 @@ void App::openLeftElms() {
   heads_alphabet_edit_->show();
   open_left_controller_btn_->setText(">");
   word_edit_->show();
-  word_edit_->setDisabled(!set_alphabets);
+  word_edit_->setDisabled(!set_alphabets_);
   set_word_btn_->show();
-  set_word_btn_->setDisabled(!set_alphabets);
+  set_word_btn_->setDisabled(!set_alphabets_);
 }
 
 void App::closeRightElms() {
@@ -275,12 +284,12 @@ void App::closeRightElms() {
 void App::openRightElms() {
   open_right_controller_btn_->setText("<");
   table_label_->show();
-  table_label_->setDisabled(!set_alphabets);
-  table_scroll_area_->setDisabled(!set_alphabets);
+  table_label_->setDisabled(!set_alphabets_);
+  table_scroll_area_->setDisabled(!set_alphabets_);
   table_scroll_area_->show();
-  add_row_btn_->setDisabled(!set_alphabets);
+  add_row_btn_->setDisabled(!set_alphabets_);
   add_row_btn_->show();
-  delete_row_btn_->setDisabled(!set_alphabets);
+  delete_row_btn_->setDisabled(!set_alphabets_);
   delete_row_btn_->show();
 }
 
@@ -296,7 +305,7 @@ void App::confirmAlphabets() {
     return;
   }
 
-  set_alphabets = true;
+  set_alphabets_ = true;
   updateTable();
 }
 
@@ -315,26 +324,26 @@ void App::updateTable() {
     cells_[i].resize(turing_(i).size());
     for (int j = 0; j < cells_[i].size(); ++j) {
       cells_[i][j] = new QLineEdit(table_label_);
-      cells_[i][j]->resize(cell_width_, cell_height_);
-      cells_[i][j]->move(cell_width_ * j, cell_height_ * i);
+      cells_[i][j]->resize(table_cell_width_, table_cell_height_);
+      cells_[i][j]->move(table_cell_width_ * j, table_cell_height_ * i);
       cells_[i][j]->setAlignment(Qt::AlignCenter);
       cells_[i][j]->setText(QString::fromStdString(turing_(i, j)));
       cells_[i][j]->setStyleSheet("QLabel { border: 1px solid #000;"
-                                            "background: #fff;"
-                                            "color: #000; }");
+                                  "background: #fff;"
+                                  "color: #000; }");
     }
   }
 
-  for (auto & cell : cells_) {
+  for (auto &cell: cells_) {
     cell[0]->setReadOnly(true);
   }
 
-  for (auto & i : cells_[0]) {
+  for (auto &i: cells_[0]) {
     i->setReadOnly(true);
   }
 
-  table_label_->resize((int)cells_[0].size() * cell_width_,
-                       (int)cells_.size() * cell_height_);
+  table_label_->resize((int) cells_[0].size() * table_cell_width_,
+                       (int) cells_.size() * table_cell_height_);
 
   if (right_opened_) openRightElms();
   if (left_opened_) openLeftElms();
