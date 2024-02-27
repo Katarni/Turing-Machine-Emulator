@@ -71,6 +71,7 @@ class App : QMainWindow {
   std::vector<std::vector<QLineEdit *>> cells_;
 
   QLabel *table_label_;
+  QLabel *curr_word_holder_ldl_;
   QLabel *curr_word_ldl_;
   std::vector<QLabel*> tape_;
 

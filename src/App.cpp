@@ -192,12 +192,27 @@ App::App() {
   updateTable();
 
   //// Tape Window
+  curr_word_ldl_ = new QLabel(turing_head_);
+  curr_word_ldl_->move(160, 170);
+  curr_word_ldl_->resize(200, 40);
+  curr_word_ldl_->setStyleSheet("QLabel { background: transparent;"
+                                       "font-size: 25px; }");
+  curr_word_ldl_->setText("Current word:");
+
+  curr_word_holder_ldl_ = new QLabel(turing_head_);
+  curr_word_holder_ldl_->move(320, 175);
+  curr_word_holder_ldl_->resize(200, 30);
+  curr_word_holder_ldl_->setStyleSheet("QLabel { border-bottom: 2px solid #fff;"
+                                "background: transparent;"
+                                "font-size: 30px; }");
+
   tape_.resize(7);
   for (int i = 0; i < 7; ++i) {
     tape_[i] = new QLabel(turing_head_);
     tape_[i]->resize(tape_cell_width_, tape_cell_height_);
     tape_[i]->move(142 + tape_cell_width_ * i, 260);
     tape_[i]->setStyleSheet("QLabel { border: 2px solid #fff;"
+                            "background: transparent;"
                             "font-size: 30px;"
                             "padding-bottom: 7px; }");
     tape_[i]->setAlignment(Qt::AlignCenter);
@@ -382,11 +397,11 @@ void App::setWord() {
     return;
   }
 
+  curr_word_holder_ldl_->setText(QString::fromStdString(word));
   setTape();
 }
 
 void App::setTape() {
-  backupTable();
   turing_.setCurrPos(turing_.recoverCurrPos());
   for (int i = 0; i < 7; ++i) {
     char letter = turing_.getElm(turing_.getCurrPos() + i);
