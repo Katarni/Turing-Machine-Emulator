@@ -34,9 +34,15 @@ class Turing {
 
   const std::string &getCurrWord();
 
-  const int &getCurrentPos() const;
+  int recoverCurrPos() const;
 
   void start();
+
+  void setCurrPos(int currPos);
+
+  int getCurrPos() const;
+
+  char getElm(int i);
 
  private:
   int lambda_pos_ = 1;

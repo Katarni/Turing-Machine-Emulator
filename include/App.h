@@ -87,4 +87,6 @@ class App : QMainWindow {
   void updateTable();
 
   void backupTable();
+
+  void setTape();
 };

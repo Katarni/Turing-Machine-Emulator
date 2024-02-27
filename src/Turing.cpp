@@ -163,13 +163,25 @@ const std::string &Turing::getCurrWord() {
   return word;
 }
 
-const int &Turing::getCurrentPos() const {
+int Turing::recoverCurrPos() const {
   for (int i = 0; i < tape_.size(); ++i) {
     if (tape_[i] != -1) return i;
   }
-  return (int) tape_.size();
+  return 5e3;
 }
 
 void Turing::start() {
-  curr_pos_ = getCurrentPos();
+  curr_pos_ = recoverCurrPos();
+}
+
+void Turing::setCurrPos(int currPos) {
+  curr_pos_ = currPos;
+}
+
+int Turing::getCurrPos() const {
+  return curr_pos_;
+}
+
+char Turing::getElm(int i) {
+  return tape_[i];
 }

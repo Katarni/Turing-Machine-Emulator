@@ -197,8 +197,13 @@ App::App() {
     tape_[i] = new QLabel(turing_head_);
     tape_[i]->resize(tape_cell_width_, tape_cell_height_);
     tape_[i]->move(142 + tape_cell_width_ * i, 260);
-    tape_[i]->setStyleSheet("QLabel { border: 2px solid #fff; }");
+    tape_[i]->setStyleSheet("QLabel { border: 2px solid #fff;"
+                            "font-size: 30px;"
+                            "padding-bottom: 7px; }");
+    tape_[i]->setAlignment(Qt::AlignCenter);
   }
+
+  setTape();
 
   window_->show();
 }
@@ -375,5 +380,20 @@ void App::setWord() {
   if (!turing_.setWord(word)) {
     word_edit_->setText("incorrect");
     return;
+  }
+
+  setTape();
+}
+
+void App::setTape() {
+  backupTable();
+  turing_.setCurrPos(turing_.recoverCurrPos());
+  for (int i = 0; i < 7; ++i) {
+    char letter = turing_.getElm(turing_.getCurrPos() + i);
+    if (letter == -1) {
+      tape_[i]->setText(QString::fromStdString("/\\"));
+    } else {
+      tape_[i]->setText(QChar(letter));
+    }
   }
 }
