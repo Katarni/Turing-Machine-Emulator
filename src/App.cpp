@@ -250,18 +250,18 @@ App::App() {
                            "border-radius: 5px; }");
 
   //// Moving elms
-  move_engine = new Engine;
-  move_thread = new QThread;
-  move_engine->moveToThread(move_thread);
-  connect(move_thread, &QThread::started, move_engine, &Engine::moveElm);
-  connect(move_engine, &Engine::move, this, [this](int dis) {
+  move_engine_ = new Engine;
+  move_thread_ = new QThread;
+  move_engine_->moveToThread(move_thread_);
+  connect(move_thread_, &QThread::started, move_engine_, &Engine::moveElm);
+  connect(move_engine_, &Engine::move, this, [this](int dis) {
     this->head_lbl_->move(head_lbl_->x() + dis*heads_direction_, head_lbl_->y());
   });
-  connect(move_engine, &Engine::finished, this, [this]() {
+  connect(move_engine_, &Engine::finished, this, [this]() {
     this->right_arrow_btn_->setDisabled(false);
     this->left_arrow_btn_->setDisabled(false);
   });
-  connect(move_engine, &Engine::finished, move_thread, &QThread::quit);
+  connect(move_engine_, &Engine::finished, move_thread_, &QThread::quit);
 
   window_->show();
 }
@@ -463,7 +463,7 @@ void App::moveHeadToRight() {
   right_arrow_btn_->setDisabled(true);
   left_arrow_btn_->setDisabled(true);
 
-  move_thread->start();
+  move_thread_->start();
 }
 
 void App::moveHeadToLeft() {
@@ -474,5 +474,5 @@ void App::moveHeadToLeft() {
   right_arrow_btn_->setDisabled(true);
   left_arrow_btn_->setDisabled(true);
 
-  move_thread->start();
+  move_thread_->start();
 }

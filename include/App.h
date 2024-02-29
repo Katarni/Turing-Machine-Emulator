@@ -13,6 +13,7 @@ class App : protected QMainWindow {
  Q_OBJECT
 
  public:
+
   App();
 
  private slots:
@@ -87,8 +88,8 @@ class App : protected QMainWindow {
 
   QScrollArea *table_scroll_area_;
 
-  Engine* move_engine;
-  QThread* move_thread;
+  Engine *move_engine_;
+  QThread *move_thread_;
 
   void closeLeftElms();
 

@@ -7,14 +7,17 @@
 #include "header.h"
 
 
-class Engine: public QObject {
-  Q_OBJECT
+class Engine : public QObject {
+ Q_OBJECT
 
  public slots:
+
   void moveElm();
 
  signals:
+
   void move(int);
+
   void finished();
 
  private:
