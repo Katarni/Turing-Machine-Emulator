@@ -196,29 +196,72 @@ App::App() {
   curr_word_ldl_->move(160, 170);
   curr_word_ldl_->resize(200, 40);
   curr_word_ldl_->setStyleSheet("QLabel { background: transparent;"
-                                       "font-size: 25px; }");
+                                        "font-size: 25px;"
+                                        "color: #9ea3a2; }");
   curr_word_ldl_->setText("Current word:");
 
   curr_word_holder_ldl_ = new QLabel(turing_head_);
   curr_word_holder_ldl_->move(320, 175);
   curr_word_holder_ldl_->resize(200, 30);
-  curr_word_holder_ldl_->setStyleSheet("QLabel { border-bottom: 2px solid #fff;"
-                                "background: transparent;"
-                                "font-size: 30px; }");
+  curr_word_holder_ldl_->setStyleSheet("QLabel { border-bottom: 2px solid #9ea3a2;"
+                                        "background: transparent;"
+                                        "font-size: 30px;"
+                                        "color: #9ea3a2; }");
 
   tape_.resize(7);
   for (int i = 0; i < 7; ++i) {
     tape_[i] = new QLabel(turing_head_);
     tape_[i]->resize(tape_cell_width_, tape_cell_height_);
     tape_[i]->move(142 + tape_cell_width_ * i, 260);
-    tape_[i]->setStyleSheet("QLabel { border: 2px solid #fff;"
+    tape_[i]->setStyleSheet("QLabel { border: 2px solid #9ea3a2;"
                             "background: transparent;"
                             "font-size: 30px;"
-                            "padding-bottom: 7px; }");
+                            "padding-bottom: 7px;"
+                            "color: #9ea3a2; }");
     tape_[i]->setAlignment(Qt::AlignCenter);
   }
-
   setTape();
+
+  left_arrow_btn_ = new QPushButton(turing_head_);
+  left_arrow_btn_->resize(40, 40);
+  left_arrow_btn_->move(300, 445);
+  left_arrow_btn_->setStyleSheet("QPushButton { border-radius: 20px;"
+                                 "background: #eeca5a;"
+                                 "font-size: 25px;"
+                                 "padding-bottom: 3px; }");
+  left_arrow_btn_->setText("<-");
+  connect(left_arrow_btn_, SIGNAL(released()), this, SLOT(moveHeadToLeft()));
+
+  right_arrow_btn_ = new QPushButton(turing_head_);
+  right_arrow_btn_->resize(40, 40);
+  right_arrow_btn_->move(350, 445);
+  right_arrow_btn_->setStyleSheet("QPushButton { border-radius: 20px;"
+                                  "background: #eeca5a;"
+                                  "font-size: 25px;"
+                                  "padding-bottom: 3px; }");
+  right_arrow_btn_->setText("->");
+  connect(right_arrow_btn_, SIGNAL(released()), this, SLOT(moveHeadToRight()));
+
+  head_lbl_ = new QLabel(turing_head_);
+  head_lbl_->resize(tape_cell_width_, tape_cell_height_);
+  head_lbl_->move(142 + tape_cell_width_ * heads_curr_lbl_, 260);
+  head_lbl_->setStyleSheet("QLabel { background: transparent;"
+                           "border: 6px solid #eeca5a;"
+                           "border-radius: 5px; }");
+
+  //// Moving elms
+  move_engine = new Engine;
+  move_thread = new QThread;
+  move_engine->moveToThread(move_thread);
+  connect(move_thread, &QThread::started, move_engine, &Engine::moveElm);
+  connect(move_engine, &Engine::move, this, [this](int dis) {
+    this->head_lbl_->move(head_lbl_->x() + dis*heads_direction_, head_lbl_->y());
+  });
+  connect(move_engine, &Engine::finished, this, [this]() {
+    this->right_arrow_btn_->setDisabled(false);
+    this->left_arrow_btn_->setDisabled(false);
+  });
+  connect(move_engine, &Engine::finished, move_thread, &QThread::quit);
 
   window_->show();
 }
@@ -411,4 +454,25 @@ void App::setTape() {
       tape_[i]->setText(QChar(letter));
     }
   }
+}
+
+void App::moveHeadToRight() {
+  if (heads_curr_lbl_ == 6) return;
+  ++heads_curr_lbl_;
+  heads_direction_ = 1;
+  right_arrow_btn_->setDisabled(true);
+  left_arrow_btn_->setDisabled(true);
+
+  move_thread->start();
+}
+
+void App::moveHeadToLeft() {
+  if (heads_curr_lbl_ == 0) return;
+  --heads_curr_lbl_;
+
+  heads_direction_ = -1;
+  right_arrow_btn_->setDisabled(true);
+  left_arrow_btn_->setDisabled(true);
+
+  move_thread->start();
 }

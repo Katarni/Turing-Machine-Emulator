@@ -27,3 +27,4 @@
 #include <QTableWidget>
 #include <QLabel>
 #include <QThread>
+#include <QKeyEvent>

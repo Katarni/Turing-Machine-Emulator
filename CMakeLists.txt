@@ -19,6 +19,8 @@ add_executable(TuringMachine main.cpp
         include/header.h
         src/Turing.cpp
         include/Turing.h
+        src/Engine.cpp
+        include/Engine.h
 )
 target_link_libraries(TuringMachine
         Qt::Core

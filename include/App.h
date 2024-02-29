@@ -5,10 +5,11 @@
 #pragma once
 
 #include "Turing.h"
+#include "Engine.h"
 #include "header.h"
 
 
-class App : QMainWindow {
+class App : protected QMainWindow {
  Q_OBJECT
 
  public:
@@ -30,7 +31,14 @@ class App : QMainWindow {
 
   void setWord();
 
+  void moveHeadToRight();
+
+  void moveHeadToLeft();
+
  private:
+  int heads_curr_lbl_ = 3;
+  int heads_direction_ = 1;
+
   const int table_cell_width_ = 70, table_cell_height_ = 40;
   const int tape_cell_width_ = 60, tape_cell_height_ = 60;
   const int width = 1500, height = 800;
@@ -64,6 +72,7 @@ class App : QMainWindow {
   QPushButton *add_row_btn_;
   QPushButton *delete_row_btn_;
   QPushButton *set_word_btn_;
+  QPushButton *left_arrow_btn_, *right_arrow_btn_;
 
   QLineEdit *tape_alphabet_edit_;
   QLineEdit *heads_alphabet_edit_;
@@ -73,9 +82,13 @@ class App : QMainWindow {
   QLabel *table_label_;
   QLabel *curr_word_holder_ldl_;
   QLabel *curr_word_ldl_;
-  std::vector<QLabel*> tape_;
+  QLabel *head_lbl_;
+  std::vector<QLabel *> tape_;
 
   QScrollArea *table_scroll_area_;
+
+  Engine* move_engine;
+  QThread* move_thread;
 
   void closeLeftElms();
 
