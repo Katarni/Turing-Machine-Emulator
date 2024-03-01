@@ -200,12 +200,55 @@ char Turing::getElm(int i) {
   return tape_[i];
 }
 
-void Turing::nextStep() {
+int Turing::nextStep() {
   int curr_cell = -1;
   for (int i = 1; i < table_[0].size(); ++i) {
-    if (table_[0][i][0] == tape_[curr_pos_] || (table_[0][i] == "-1" && tape_[curr_pos_] == -1)) {
+    if (table_[0][i][0] == tape_[curr_pos_] || (table_[0][i] == "/\\" && tape_[curr_pos_] == -1)) {
       curr_cell = i;
     }
   }
 
+  if (curr_cell == -1 ||
+      table_[curr_state_ + 1][curr_cell].empty() ||
+      table_[curr_state_ + 1][curr_cell].size() > 3) {
+    return -1e5;
+  }
+
+  int ret = 0;
+  bool last = false;
+  for (char c : table_[curr_state_ + 1][curr_cell]) {
+    if (c == 'L') {
+      ret = -1;
+      --curr_pos_;
+      continue;
+    }
+
+    if (c == 'R') {
+      ret = 1;
+      ++curr_pos_;
+      continue;
+    }
+
+    if (c == '!') {
+      last = true;
+      continue;
+    }
+
+    if (c >= '0' && c <= '9') {
+      curr_state_ = c - '0';
+      continue;
+    }
+
+    if (tapes_alphabet_.find(c) == std::string::npos &&
+        heads_alphabet_.find(c) == std::string::npos) {
+      return -1e5;
+    }
+
+    tape_[curr_pos_] = c;
+  }
+
+  if (last && ret != 0) return ret * 10;
+  else if (last) return 100;
+
+  return ret;
 }

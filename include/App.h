@@ -58,6 +58,7 @@ class App : protected QMainWindow {
   bool right_opened_ = false;
   bool set_alphabets_ = false;
   bool works_ = false;
+  bool from_step_ = false;
 
   Turing turing_;
 
@@ -110,4 +111,6 @@ class App : protected QMainWindow {
   void resetTape();
 
   void setTape();
+
+  void callError();
 };

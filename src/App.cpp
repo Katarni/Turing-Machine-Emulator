@@ -474,11 +474,12 @@ void App::resetTape() {
 }
 
 void App::moveHeadToRight() {
-  works_ = false;
+  if (!from_step_) works_ = false;
 
   if (heads_curr_lbl_ == 6) {
     left_border_ += 2;
     right_border_ += 2;
+    --heads_curr_lbl_;
     setTape();
     return;
   }
@@ -493,11 +494,12 @@ void App::moveHeadToRight() {
 }
 
 void App::moveHeadToLeft() {
-  works_ = false;
+  if (!from_step_) works_ = false;
 
   if (heads_curr_lbl_ == 0) {
     left_border_ -= 2;
     right_border_ -= 2;
+    ++heads_curr_lbl_;
     setTape();
     return;
   }
@@ -512,11 +514,36 @@ void App::moveHeadToLeft() {
 }
 
 void App::nextStep() {
+  backupTable();
   if (!works_) {
-    turing_.onStart();
+    resetTape();
+    works_ = true;
   }
 
-  turing_.nextStep();
+  int ret = turing_.nextStep();
+  if (ret == -1e5) {
+    callError();
+    return;
+  }
+
+  setTape();
+
+  if (ret == 100) {
+    works_ = false;
+    return;
+  }
+
+  from_step_ = true;
+  if (ret < 0) {
+    moveHeadToLeft();
+  } else if (ret > 0) {
+    moveHeadToRight();
+  }
+  from_step_ = false;
+
+  if (ret == 10 || ret == -10) {
+    works_ = false;
+  }
 }
 
 void App::setTape() {
@@ -528,4 +555,10 @@ void App::setTape() {
       tape_[i]->setText(QChar(letter));
     }
   }
+
+  head_lbl_->move(142 + tape_cell_width_ * heads_curr_lbl_, 260);
+}
+
+void App::callError() {
+
 }

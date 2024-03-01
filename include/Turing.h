@@ -50,12 +50,12 @@ class Turing: public QObject {
 
   char getElm(int i);
 
-  void nextStep();
+  int nextStep();
 
  private:
   int lambda_pos_ = 1;
   int curr_pos_ = 5e3;
-  int curr_state = 0;
+  int curr_state_ = 0;
 
   std::vector<char> tape_;
 
