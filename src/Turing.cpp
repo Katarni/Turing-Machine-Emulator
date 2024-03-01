@@ -17,6 +17,18 @@ Turing::Turing() {
 bool Turing::changeAlphabets(std::string &new_tape, std::string &new_head) {
   // проверить алфавиты на корректность
 
+  std::unordered_set<char> letters;
+  for (char c : new_tape) {
+    letters.insert(c);
+  }
+  for (char c : new_head) {
+    letters.insert(c);
+  }
+
+  if (new_head.size() + new_tape.size() != letters.size()) {
+    return false;
+  }
+
   for (char c: tapes_alphabet_) {
     if (new_tape.find(c) == std::string::npos) {
       tapes_alphabet_.swap(new_tape);
@@ -53,6 +65,8 @@ void Turing::updateTable(bool clean) {
     for (int i = lambda_pos_ + 1; i < table_[0].size(); ++i) {
       table_[0][i] = heads_alphabet_[i - lambda_pos_ - 1];
     }
+
+    addRow();
     return;
   }
 
@@ -170,7 +184,7 @@ int Turing::recoverCurrPos() const {
   return 5e3;
 }
 
-void Turing::start() {
+void Turing::onStart() {
   curr_pos_ = recoverCurrPos();
 }
 
@@ -184,4 +198,14 @@ int Turing::getCurrPos() const {
 
 char Turing::getElm(int i) {
   return tape_[i];
+}
+
+void Turing::nextStep() {
+  int curr_cell = -1;
+  for (int i = 1; i < table_[0].size(); ++i) {
+    if (table_[0][i][0] == tape_[curr_pos_] || (table_[0][i] == "-1" && tape_[curr_pos_] == -1)) {
+      curr_cell = i;
+    }
+  }
+
 }

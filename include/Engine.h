@@ -12,7 +12,12 @@ class Engine : public QObject {
 
  public slots:
 
-  void moveElm();
+  void moveElmInThread();
+//  void moveElmInStep();
+
+  void setDirection(int direction);
+
+  int getDirection() const;
 
  signals:
 
@@ -22,4 +27,5 @@ class Engine : public QObject {
 
  private:
   int distance_ = 60;
+  int direction_ = 1;
 };

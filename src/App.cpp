@@ -196,17 +196,17 @@ App::App() {
   curr_word_ldl_->move(160, 170);
   curr_word_ldl_->resize(200, 40);
   curr_word_ldl_->setStyleSheet("QLabel { background: transparent;"
-                                        "font-size: 25px;"
-                                        "color: #9ea3a2; }");
+                                "font-size: 25px;"
+                                "color: #9ea3a2; }");
   curr_word_ldl_->setText("Current word:");
 
   curr_word_holder_ldl_ = new QLabel(turing_head_);
   curr_word_holder_ldl_->move(320, 175);
   curr_word_holder_ldl_->resize(200, 30);
   curr_word_holder_ldl_->setStyleSheet("QLabel { border-bottom: 2px solid #9ea3a2;"
-                                        "background: transparent;"
-                                        "font-size: 30px;"
-                                        "color: #9ea3a2; }");
+                                       "background: transparent;"
+                                       "font-size: 30px;"
+                                       "color: #9ea3a2; }");
 
   tape_.resize(7);
   for (int i = 0; i < 7; ++i) {
@@ -220,7 +220,6 @@ App::App() {
                             "color: #9ea3a2; }");
     tape_[i]->setAlignment(Qt::AlignCenter);
   }
-  setTape();
 
   left_arrow_btn_ = new QPushButton(turing_head_);
   left_arrow_btn_->resize(40, 40);
@@ -249,13 +248,24 @@ App::App() {
                            "border: 6px solid #eeca5a;"
                            "border-radius: 5px; }");
 
+  next_step_btn_ = new QPushButton(turing_head_);
+  next_step_btn_->resize(40, 40);
+  next_step_btn_->move(200, 80);
+  next_step_btn_->setStyleSheet("QPushButton { border-radius: 20px;"
+                                  "background: #eeca5a;"
+                                  "font-size: 25px;"
+                                  "padding-bottom: 3px; }");
+  next_step_btn_->setText(">|");
+  connect(next_step_btn_, SIGNAL(released()), this, SLOT(nextStep()));
+
+
   //// Moving elms
   move_engine_ = new Engine;
+
   move_thread_ = new QThread;
-  move_engine_->moveToThread(move_thread_);
-  connect(move_thread_, &QThread::started, move_engine_, &Engine::moveElm);
+  connect(move_thread_, &QThread::started, move_engine_, &Engine::moveElmInThread);
   connect(move_engine_, &Engine::move, this, [this](int dis) {
-    this->head_lbl_->move(head_lbl_->x() + dis*heads_direction_, head_lbl_->y());
+    this->head_lbl_->move(head_lbl_->x() + dis * move_engine_->getDirection(), head_lbl_->y());
   });
   connect(move_engine_, &Engine::finished, this, [this]() {
     this->right_arrow_btn_->setDisabled(false);
@@ -263,6 +273,7 @@ App::App() {
   });
   connect(move_engine_, &Engine::finished, move_thread_, &QThread::quit);
 
+  resetTape();
   window_->show();
 }
 
@@ -441,38 +452,80 @@ void App::setWord() {
   }
 
   curr_word_holder_ldl_->setText(QString::fromStdString(word));
-  setTape();
+  resetTape();
 }
 
-void App::setTape() {
+void App::resetTape() {
   turing_.setCurrPos(turing_.recoverCurrPos());
+  left_border_ = turing_.getCurrPos();
+  right_border_ = left_border_ + 7;
+
   for (int i = 0; i < 7; ++i) {
-    char letter = turing_.getElm(turing_.getCurrPos() + i);
+    char letter = turing_.getElm(left_border_ + i);
     if (letter == -1) {
       tape_[i]->setText(QString::fromStdString("/\\"));
     } else {
       tape_[i]->setText(QChar(letter));
     }
   }
+
+  heads_curr_lbl_ = 0;
+  head_lbl_->move(142 + tape_cell_width_ * heads_curr_lbl_, 260);
 }
 
 void App::moveHeadToRight() {
-  if (heads_curr_lbl_ == 6) return;
+  works_ = false;
+
+  if (heads_curr_lbl_ == 6) {
+    left_border_ += 2;
+    right_border_ += 2;
+    setTape();
+    return;
+  }
   ++heads_curr_lbl_;
-  heads_direction_ = 1;
+
+  move_engine_->setDirection(1);
   right_arrow_btn_->setDisabled(true);
   left_arrow_btn_->setDisabled(true);
 
+  move_engine_->moveToThread(move_thread_);
   move_thread_->start();
 }
 
 void App::moveHeadToLeft() {
-  if (heads_curr_lbl_ == 0) return;
+  works_ = false;
+
+  if (heads_curr_lbl_ == 0) {
+    left_border_ -= 2;
+    right_border_ -= 2;
+    setTape();
+    return;
+  }
   --heads_curr_lbl_;
 
-  heads_direction_ = -1;
+  move_engine_->setDirection(-1);
   right_arrow_btn_->setDisabled(true);
   left_arrow_btn_->setDisabled(true);
 
+  move_engine_->moveToThread(move_thread_);
   move_thread_->start();
+}
+
+void App::nextStep() {
+  if (!works_) {
+    turing_.onStart();
+  }
+
+  turing_.nextStep();
+}
+
+void App::setTape() {
+  for (int i = 0; i < 7; ++i) {
+    char letter = turing_.getElm(left_border_ + i);
+    if (letter == -1) {
+      tape_[i]->setText(QString::fromStdString("/\\"));
+    } else {
+      tape_[i]->setText(QChar(letter));
+    }
+  }
 }

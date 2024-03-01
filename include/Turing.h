@@ -2,9 +2,15 @@
 // Created by Тимур Ахметзянов on 25.02.2024.
 //
 
-#include "header.h"
+#pragma once
 
-class Turing {
+#include "header.h"
+#include "Engine.h"
+
+
+class Turing: public QObject {
+  Q_OBJECT
+
  public:
   Turing();
 
@@ -36,7 +42,7 @@ class Turing {
 
   int recoverCurrPos() const;
 
-  void start();
+  void onStart();
 
   void setCurrPos(int currPos);
 
@@ -44,9 +50,12 @@ class Turing {
 
   char getElm(int i);
 
+  void nextStep();
+
  private:
   int lambda_pos_ = 1;
   int curr_pos_ = 5e3;
+  int curr_state = 0;
 
   std::vector<char> tape_;
 

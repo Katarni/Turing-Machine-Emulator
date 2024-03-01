@@ -36,9 +36,11 @@ class App : protected QMainWindow {
 
   void moveHeadToLeft();
 
+  void nextStep();
+
  private:
   int heads_curr_lbl_ = 3;
-  int heads_direction_ = 1;
+  int left_border_ = 5e3, right_border_ = 5e3 + 7;
 
   const int table_cell_width_ = 70, table_cell_height_ = 40;
   const int tape_cell_width_ = 60, tape_cell_height_ = 60;
@@ -55,6 +57,7 @@ class App : protected QMainWindow {
   bool left_opened_ = false;
   bool right_opened_ = false;
   bool set_alphabets_ = false;
+  bool works_ = false;
 
   Turing turing_;
 
@@ -74,6 +77,7 @@ class App : protected QMainWindow {
   QPushButton *delete_row_btn_;
   QPushButton *set_word_btn_;
   QPushButton *left_arrow_btn_, *right_arrow_btn_;
+  QPushButton *next_step_btn_;
 
   QLineEdit *tape_alphabet_edit_;
   QLineEdit *heads_alphabet_edit_;
@@ -102,6 +106,8 @@ class App : protected QMainWindow {
   void updateTable();
 
   void backupTable();
+
+  void resetTape();
 
   void setTape();
 };
