@@ -258,6 +258,11 @@ App::App() {
   next_step_btn_->setText(">|");
   connect(next_step_btn_, SIGNAL(released()), this, SLOT(nextStep()));
 
+  message_lbl_ = new QLabel(turing_head_);
+  message_lbl_->resize(150, 50);
+  message_lbl_->move(280, 350);
+  message_lbl_->setAlignment(Qt::AlignCenter);
+  message_lbl_->setStyleSheet("QLabel { background: transparent; }");
 
   //// Moving elms
   move_engine_ = new Engine;
@@ -316,6 +321,7 @@ void App::exit() {
 }
 
 void App::closeLeftElms() {
+  message_lbl_->setText("");
   tape_alphabet_edit_->setDisabled(true);
   tape_alphabet_edit_->hide();
   heads_alphabet_edit_->setDisabled(true);
@@ -330,6 +336,7 @@ void App::closeLeftElms() {
 }
 
 void App::openLeftElms() {
+  message_lbl_->setText("");
   tape_alphabet_edit_->setDisabled(false);
   tape_alphabet_edit_->show();
   heads_alphabet_edit_->setDisabled(false);
@@ -344,6 +351,7 @@ void App::openLeftElms() {
 }
 
 void App::closeRightElms() {
+  message_lbl_->setText("");
   open_right_controller_btn_->setText(">");
   table_label_->hide();
   table_label_->setDisabled(true);
@@ -356,6 +364,7 @@ void App::closeRightElms() {
 }
 
 void App::openRightElms() {
+  message_lbl_->setText("");
   open_right_controller_btn_->setText("<");
   table_label_->show();
   table_label_->setDisabled(!set_alphabets_);
@@ -368,6 +377,7 @@ void App::openRightElms() {
 }
 
 void App::confirmAlphabets() {
+  message_lbl_->setText("");
   auto tape = tape_alphabet_edit_->text().toStdString();
   auto head = heads_alphabet_edit_->text().toStdString();
 
@@ -424,12 +434,14 @@ void App::updateTable() {
 }
 
 void App::addRow() {
+  message_lbl_->setText("");
   backupTable();
   turing_.addRow();
   updateTable();
 }
 
 void App::deleteRow() {
+  message_lbl_->setText("");
   backupTable();
   turing_.deleteRow();
   updateTable();
@@ -444,6 +456,7 @@ void App::backupTable() {
 }
 
 void App::setWord() {
+  message_lbl_->setText("");
   std::string word = word_edit_->text().toStdString();
 
   if (!turing_.setWord(word)) {
@@ -456,6 +469,7 @@ void App::setWord() {
 }
 
 void App::resetTape() {
+  message_lbl_->setText("");
   turing_.setCurrPos(turing_.recoverCurrPos());
   left_border_ = turing_.getCurrPos();
   right_border_ = left_border_ + 7;
@@ -474,6 +488,7 @@ void App::resetTape() {
 }
 
 void App::moveHeadToRight() {
+  message_lbl_->setText("");
   if (!from_step_) works_ = false;
 
   if (heads_curr_lbl_ == 6) {
@@ -494,6 +509,7 @@ void App::moveHeadToRight() {
 }
 
 void App::moveHeadToLeft() {
+  message_lbl_->setText("");
   if (!from_step_) works_ = false;
 
   if (heads_curr_lbl_ == 0) {
@@ -529,7 +545,7 @@ void App::nextStep() {
   setTape();
 
   if (ret == 100) {
-    works_ = false;
+    callStop();
     return;
   }
 
@@ -542,7 +558,7 @@ void App::nextStep() {
   from_step_ = false;
 
   if (ret == 10 || ret == -10) {
-    works_ = false;
+    callStop();
   }
 }
 
@@ -560,5 +576,17 @@ void App::setTape() {
 }
 
 void App::callError() {
+  works_ = false;
 
+  message_lbl_->setStyleSheet("QLabel { background: transparent;"
+                              "color: red; }");
+  message_lbl_->setText("error");
+}
+
+void App::callStop() {
+  works_ = false;
+
+  message_lbl_->setStyleSheet("QLabel { background: transparent;"
+                              "color: 9ea3a2; }");
+  message_lbl_->setText("stopped");
 }

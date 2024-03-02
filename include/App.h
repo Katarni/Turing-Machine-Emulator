@@ -89,6 +89,7 @@ class App : protected QMainWindow {
   QLabel *curr_word_holder_ldl_;
   QLabel *curr_word_ldl_;
   QLabel *head_lbl_;
+  QLabel *message_lbl_;
   std::vector<QLabel *> tape_;
 
   QScrollArea *table_scroll_area_;
@@ -113,4 +114,8 @@ class App : protected QMainWindow {
   void setTape();
 
   void callError();
+
+  void callStop();
+
+  void clearMessage();
 };
