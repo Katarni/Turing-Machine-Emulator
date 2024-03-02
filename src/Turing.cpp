@@ -231,6 +231,7 @@ int Turing::nextStep() {
     }
 
     if (c >= '0' && c <= '9') {
+      if (c - '0' >= table_.size() - 1) return -1e5;
       curr_state_ = c - '0';
       continue;
     }
@@ -247,4 +248,8 @@ int Turing::nextStep() {
   else if (last) return 100;
 
   return ret;
+}
+
+void Turing::play() {
+
 }
