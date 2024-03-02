@@ -42,8 +42,6 @@ class Turing: public QObject {
 
   int recoverCurrPos() const;
 
-  void onStart();
-
   void setCurrPos(int currPos);
 
   int getCurrPos() const;

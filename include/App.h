@@ -79,6 +79,7 @@ class App : protected QMainWindow {
   QPushButton *set_word_btn_;
   QPushButton *left_arrow_btn_, *right_arrow_btn_;
   QPushButton *next_step_btn_;
+  QPushButton *play_btn_, *pause_btn_, *stop_btn_;
 
   QLineEdit *tape_alphabet_edit_;
   QLineEdit *heads_alphabet_edit_;
@@ -116,6 +117,4 @@ class App : protected QMainWindow {
   void callError();
 
   void callStop();
-
-  void clearMessage();
 };

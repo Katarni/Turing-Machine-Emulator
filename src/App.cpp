@@ -248,21 +248,49 @@ App::App() {
                            "border: 6px solid #eeca5a;"
                            "border-radius: 5px; }");
 
-  next_step_btn_ = new QPushButton(turing_head_);
-  next_step_btn_->resize(40, 40);
-  next_step_btn_->move(200, 80);
-  next_step_btn_->setStyleSheet("QPushButton { border-radius: 20px;"
-                                  "background: #eeca5a;"
-                                  "font-size: 25px;"
-                                  "padding-bottom: 3px; }");
-  next_step_btn_->setText(">|");
-  connect(next_step_btn_, SIGNAL(released()), this, SLOT(nextStep()));
-
   message_lbl_ = new QLabel(turing_head_);
   message_lbl_->resize(150, 50);
   message_lbl_->move(280, 350);
   message_lbl_->setAlignment(Qt::AlignCenter);
   message_lbl_->setStyleSheet("QLabel { background: transparent; }");
+
+  //// Work buttons
+  next_step_btn_ = new QPushButton(turing_head_);
+  next_step_btn_->resize(40, 40);
+  next_step_btn_->move(200, 80);
+  next_step_btn_->setStyleSheet("QPushButton { border-radius: 20px;"
+                                "background: #eeca5a;"
+                                "font-size: 25px;"
+                                "padding-bottom: 3px; }");
+  next_step_btn_->setText(">|");
+  connect(next_step_btn_, SIGNAL(released()), this, SLOT(nextStep()));
+
+  play_btn_ = new QPushButton(turing_head_);
+  play_btn_->resize(40, 40);
+  play_btn_->move(255, 80);
+  play_btn_->setStyleSheet("QPushButton { border-radius: 20px;"
+                                "background: #eeca5a;"
+                                "font-size: 25px;"
+                                "padding-bottom: 3px; }");
+  play_btn_->setText(">");
+
+  pause_btn_ = new QPushButton(turing_head_);
+  pause_btn_->resize(40, 40);
+  pause_btn_->move(310, 80);
+  pause_btn_->setStyleSheet("QPushButton { border-radius: 20px;"
+                           "background: #eeca5a;"
+                           "font-size: 25px;"
+                           "padding-bottom: 3px; }");
+  pause_btn_->setText("||");
+
+  stop_btn_ = new QPushButton(turing_head_);
+  stop_btn_->resize(40, 40);
+  stop_btn_->move(365, 80);
+  stop_btn_->setStyleSheet("QPushButton { border-radius: 20px;"
+                            "background: #eeca5a;"
+                            "font-size: 25px;"
+                            "padding-bottom: 3px; }");
+  stop_btn_->setText("[x]");
 
   //// Moving elms
   move_engine_ = new Engine;
@@ -579,7 +607,8 @@ void App::callError() {
   works_ = false;
 
   message_lbl_->setStyleSheet("QLabel { background: transparent;"
-                              "color: red; }");
+                              "color: red;"
+                              "font-size: 25px; }");
   message_lbl_->setText("error");
 }
 
@@ -587,6 +616,7 @@ void App::callStop() {
   works_ = false;
 
   message_lbl_->setStyleSheet("QLabel { background: transparent;"
-                              "color: 9ea3a2; }");
+                              "color: #9ea3a2;"
+                              "font-size: 25px; }");
   message_lbl_->setText("stopped");
 }

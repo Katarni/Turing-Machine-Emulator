@@ -184,10 +184,6 @@ int Turing::recoverCurrPos() const {
   return 5e3;
 }
 
-void Turing::onStart() {
-  curr_pos_ = recoverCurrPos();
-}
-
 void Turing::setCurrPos(int currPos) {
   curr_pos_ = currPos;
 }
