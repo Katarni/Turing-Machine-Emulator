@@ -142,7 +142,12 @@ void Turing::deleteRow() {
 }
 
 bool Turing::setWord(const std::string &word) {
-  // проверить на корректность
+  for (char c : word) {
+    if (heads_alphabet_.find(c) == std::string::npos &&
+      tapes_alphabet_.find(c) == std::string::npos) {
+      return false;
+    }
+  }
 
   for (char &letter: tape_) {
     letter = '^';
@@ -204,6 +209,7 @@ int Turing::nextStep() {
   for (int i = 1; i < table_[0].size(); ++i) {
     if (table_[0][i][0] == tape_[curr_pos_]) {
       curr_cell = i;
+      break;
     }
   }
 
@@ -215,10 +221,16 @@ int Turing::nextStep() {
 
   int ret = 0;
   bool last = false;
-  bool moved = false, edited = false, edit_state = false;
+  bool moved = false, edited = false, edit_state = false, state_current_edit = false;
+  int state = -1;
   for (char c : table_[curr_state_ + 1][curr_cell]) {
     if (c == 'L') {
       if (moved) return -1e5;
+      if (state_current_edit) {
+        edit_state = true;
+        state_current_edit = false;
+        curr_state_ = state == -1 ? curr_state_ : state;
+      }
       ret = -1;
       --curr_pos_;
       moved = true;
@@ -227,6 +239,11 @@ int Turing::nextStep() {
 
     if (c == 'R') {
       if (moved) return -1e5;
+      if (state_current_edit) {
+        edit_state = true;
+        state_current_edit = false;
+        curr_state_ = state == -1 ? curr_state_ : state;
+      }
       ret = 1;
       ++curr_pos_;
       moved = true;
@@ -239,10 +256,10 @@ int Turing::nextStep() {
     }
 
     if (c >= '0' && c <= '9') {
-      if (c - '0' >= table_.size() - 1) return -1e5;
       if (edit_state) return -1e5;
-      curr_state_ = c - '0';
-      edit_state = true;
+      if (state == -1) state = 0;
+      state = state * 10 + c - '0';
+      state_current_edit = true;
       continue;
     }
 
@@ -252,8 +269,17 @@ int Turing::nextStep() {
     }
 
     if (edited) return -1e5;
+    if (state_current_edit) {
+      edit_state = true;
+      state_current_edit = false;
+      curr_state_ = state == -1 ? curr_state_ : state;
+    }
     tape_[curr_pos_] = c;
     edited = true;
+  }
+
+  if (state_current_edit) {
+    curr_state_ = state == -1 ? curr_state_ : state;
   }
 
   if (last && ret != 0) return ret * 10;
