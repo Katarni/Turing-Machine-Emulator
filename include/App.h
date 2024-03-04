@@ -38,6 +38,8 @@ class App : protected QMainWindow {
 
   void nextStep();
 
+  void playWithTuring();
+
  private:
   int heads_curr_lbl_ = 3;
   int left_border_ = 5e3, right_border_ = 5e3 + 7;
@@ -96,7 +98,8 @@ class App : protected QMainWindow {
   QScrollArea *table_scroll_area_;
 
   Engine *move_engine_;
-  QThread *move_thread_;
+
+  QThread *move_thread_, *turing_thread_;
 
   void closeLeftElms();
 

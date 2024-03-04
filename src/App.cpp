@@ -269,30 +269,31 @@ App::App() {
   play_btn_->resize(40, 40);
   play_btn_->move(255, 80);
   play_btn_->setStyleSheet("QPushButton { border-radius: 20px;"
-                                "background: #eeca5a;"
-                                "font-size: 25px;"
-                                "padding-bottom: 3px; }");
+                           "background: #eeca5a;"
+                           "font-size: 25px;"
+                           "padding-bottom: 3px; }");
   play_btn_->setText(">");
+  connect(play_btn_, SIGNAL(released()), this, SLOT(playWithTuring()));
 
   pause_btn_ = new QPushButton(turing_head_);
   pause_btn_->resize(40, 40);
   pause_btn_->move(310, 80);
   pause_btn_->setStyleSheet("QPushButton { border-radius: 20px;"
-                           "background: #eeca5a;"
-                           "font-size: 25px;"
-                           "padding-bottom: 3px; }");
+                            "background: #eeca5a;"
+                            "font-size: 25px;"
+                            "padding-bottom: 3px; }");
   pause_btn_->setText("||");
 
   stop_btn_ = new QPushButton(turing_head_);
   stop_btn_->resize(40, 40);
   stop_btn_->move(365, 80);
   stop_btn_->setStyleSheet("QPushButton { border-radius: 20px;"
-                            "background: #eeca5a;"
-                            "font-size: 25px;"
-                            "padding-bottom: 3px; }");
+                           "background: #eeca5a;"
+                           "font-size: 25px;"
+                           "padding-bottom: 3px; }");
   stop_btn_->setText("[x]");
 
-  //// Moving elms
+  //// connect local engine
   move_engine_ = new Engine;
 
   move_thread_ = new QThread;
@@ -305,6 +306,8 @@ App::App() {
     this->left_arrow_btn_->setDisabled(false);
   });
   connect(move_engine_, &Engine::finished, move_thread_, &QThread::quit);
+
+  //// connect turing's engine
 
   resetTape();
   window_->show();
@@ -619,4 +622,13 @@ void App::callStop() {
                               "color: #9ea3a2;"
                               "font-size: 25px; }");
   message_lbl_->setText("stopped");
+}
+
+void App::playWithTuring() {
+  if (!works_) {
+    setTape();
+    works_ = true;
+  }
+
+
 }

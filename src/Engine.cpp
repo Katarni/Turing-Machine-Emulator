@@ -20,3 +20,11 @@ void Engine::setDirection(int direction) {
 int Engine::getDirection() const {
   return direction_;
 }
+
+void Engine::moveElmOutThread() {
+  for (int i = 0; i < distance_ * 1e6; ++i) {
+    if (i % (int) 1e6 == 0) {
+      emit move(1);
+    }
+  }
+}

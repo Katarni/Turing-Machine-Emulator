@@ -5,12 +5,12 @@
 #include "../include/Turing.h"
 
 Turing::Turing() {
-  tape_.resize(1e4, -1);
+  tape_.resize(1e4, '^');
   heads_alphabet_ = "";
   tapes_alphabet_ = "";
   table_.resize(1);
   table_[0].resize(2);
-  table_[0][1] = "/\\";
+  table_[0][1] = "^";
   addRow();
 }
 
@@ -61,7 +61,7 @@ void Turing::updateTable(bool clean) {
       table_[0][i] = tapes_alphabet_[i - 1];
     }
 
-    table_[0][lambda_pos_] = "/\\";
+    table_[0][lambda_pos_] = "^";
     for (int i = lambda_pos_ + 1; i < table_[0].size(); ++i) {
       table_[0][i] = heads_alphabet_[i - lambda_pos_ - 1];
     }
@@ -165,7 +165,7 @@ const std::string &Turing::getCurrWord() {
     }
   }
 
-  std::string word, space = "/\\";
+  std::string word, space = "^";
   for (int i = start; i < end; ++i) {
     if (tape_[i] == -1) {
       word.insert(word.end(), space.begin(), space.end());
@@ -199,7 +199,7 @@ char Turing::getElm(int i) {
 int Turing::nextStep() {
   int curr_cell = -1;
   for (int i = 1; i < table_[0].size(); ++i) {
-    if (table_[0][i][0] == tape_[curr_pos_] || (table_[0][i] == "/\\" && tape_[curr_pos_] == -1)) {
+    if (table_[0][i][0] == tape_[curr_pos_]) {
       curr_cell = i;
     }
   }

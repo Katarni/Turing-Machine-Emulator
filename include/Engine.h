@@ -13,7 +13,8 @@ class Engine : public QObject {
  public slots:
 
   void moveElmInThread();
-//  void moveElmInStep();
+
+  void moveElmOutThread();
 
   void setDirection(int direction);
 

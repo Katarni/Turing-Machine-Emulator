@@ -50,10 +50,14 @@ class Turing: public QObject {
 
   int nextStep();
 
+  void play();
+
  private:
   int lambda_pos_ = 1;
   int curr_pos_ = 5e3;
   int curr_state_ = 0;
+
+  bool paused = false;
 
   std::vector<char> tape_;
 
