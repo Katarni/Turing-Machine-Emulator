@@ -56,6 +56,8 @@ class Turing: public QObject {
 
   void setForceStop(bool forceStop);
 
+  bool cantStop();
+
  public slots:
   void play();
 

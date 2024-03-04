@@ -631,6 +631,11 @@ void App::nextStep() {
     works_ = true;
   }
 
+  if (turing_->cantStop()) {
+    callCantStop();
+    return;
+  }
+
   int ret = turing_->nextStep();
   if (ret == -1e5) {
     callError();
@@ -694,6 +699,11 @@ void App::playWithTuring() {
     works_ = true;
   }
 
+  if (turing_->cantStop()) {
+    callCantStop();
+    return;
+  }
+
   turing_->setPaused(false);
   turing_->setForceStop(false);
 
@@ -731,4 +741,14 @@ void App::addSpeed() {
 void App::removeSpeed() {
   move_engine_->removeSpeed();
   turing_->move_engine->removeSpeed();
+}
+
+void App::callCantStop() {
+  setTape(0);
+  works_ = false;
+
+  message_lbl_->setStyleSheet("QLabel { background: transparent;"
+                              "color: red;"
+                              "font-size: 25px; }");
+  message_lbl_->setText("can't stop");
 }

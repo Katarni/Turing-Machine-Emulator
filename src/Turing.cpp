@@ -336,3 +336,14 @@ void Turing::setPaused(bool paused) {
 void Turing::setForceStop(bool force_stop) {
   force_stop_ = force_stop;
 }
+
+bool Turing::cantStop() {
+  for (int i = 1; i < table_.size(); ++i) {
+    for (int j = 1; j < table_[i].size(); ++j) {
+      if (table_[i][j].find('!') != std::string::npos) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
