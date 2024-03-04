@@ -343,7 +343,7 @@ App::App() {
   });
   connect(turing_, &Turing::stopped, this, [this]() {
     setTape(0);
-    callStop(false);
+    callStop();
     this->right_arrow_btn_->setDisabled(false);
     this->left_arrow_btn_->setDisabled(false);
     this->play_btn_->setDisabled(false);
@@ -352,7 +352,7 @@ App::App() {
   connect(turing_, &Turing::stopped, turing_thread_, &QThread::quit);
   connect(turing_, &Turing::error, this, [this]() {
     setTape(0);
-    callError(false);
+    callError();
     this->right_arrow_btn_->setDisabled(false);
     this->left_arrow_btn_->setDisabled(false);
     this->play_btn_->setDisabled(false);
@@ -633,14 +633,14 @@ void App::nextStep() {
 
   int ret = turing_->nextStep();
   if (ret == -1e5) {
-    callError(true);
+    callError();
     return;
   }
 
   setTape(0);
 
   if (ret == 100) {
-    callStop(true);
+    callStop();
     return;
   }
 
@@ -653,7 +653,7 @@ void App::nextStep() {
   from_step_ = false;
 
   if (ret == 10 || ret == -10) {
-    callStop(true);
+    callStop();
   }
 }
 
@@ -666,15 +666,7 @@ void App::setTape(int offset) {
   head_lbl_->move(142 + tape_cell_width_ * heads_curr_lbl_ + table_cell_width_*offset, 260);
 }
 
-void App::callError(bool from_step) {
-//  if (heads_curr_lbl_ == 6 && !from_step) {
-//    left_border_ += 2;
-//    right_border_ += 2;
-//    --heads_curr_lbl_;
-//  } else if (!from_step_) {
-//    ++heads_curr_lbl_;
-//  }
-
+void App::callError() {
   setTape(0);
   works_ = false;
 
@@ -684,15 +676,7 @@ void App::callError(bool from_step) {
   message_lbl_->setText("error");
 }
 
-void App::callStop(bool from_step) {
-//  if (heads_curr_lbl_ == 6 && !from_step) {
-//    left_border_ += 2;
-//    right_border_ += 2;
-//    --heads_curr_lbl_;
-//  } else if (!from_step_) {
-//    ++heads_curr_lbl_;
-//  }
-
+void App::callStop() {
   setTape(0);
   works_ = false;
 
@@ -712,7 +696,6 @@ void App::playWithTuring() {
 
   turing_->setPaused(false);
   turing_->setForceStop(false);
-//  --heads_curr_lbl_;
 
   this->right_arrow_btn_->setDisabled(true);
   this->left_arrow_btn_->setDisabled(true);

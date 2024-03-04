@@ -40,9 +40,9 @@ class App : protected QMainWindow {
 
   void playWithTuring();
 
-  void callError(bool from_step);
+  void callError();
 
-  void callStop(bool from_step);
+  void callStop();
 
   void callPause();
 
