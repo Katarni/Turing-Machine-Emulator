@@ -30,6 +30,8 @@ App::App() {
   exit_btn_->setText("X");
   connect(exit_btn_, SIGNAL(released()), this, SLOT(exit()));
 
+  turing_ = new Turing;
+
   //// Left Side
   left_ear_ = new QWidget(window_);
   left_ear_->setFixedSize(220, 400);
@@ -317,9 +319,38 @@ App::App() {
   connect(turing_->move_engine, &Engine::move, this, [this](int dis) {
     this->head_lbl_->move(head_lbl_->x() + dis * move_engine_->getDirection(), head_lbl_->y());
   });
-  connect(turing_->move_engine, &Engine::finished, this, [this]() {
+  connect(turing_, &Turing::stopped, this, [this]() {
+    callStop();
     this->right_arrow_btn_->setDisabled(false);
     this->left_arrow_btn_->setDisabled(false);
+    this->play_btn_->setDisabled(false);
+    this->table_label_->setDisabled(false);
+  });
+  connect(turing_, &Turing::error, this, [this]() {
+    callError();
+    this->right_arrow_btn_->setDisabled(false);
+    this->left_arrow_btn_->setDisabled(false);
+    this->play_btn_->setDisabled(false);
+    this->table_label_->setDisabled(false);
+  });
+  connect(turing_, &Turing::readyToMove, this, [this](bool right) {
+    if (heads_curr_lbl_ == 6 && right) {
+      left_border_ += 2;
+      right_border_ += 2;
+      --heads_curr_lbl_;
+      setTape();
+    } else if (right) {
+      ++heads_curr_lbl_;
+      setTape();
+    } else if (heads_curr_lbl_ == 0) {
+      left_border_ -= 2;
+      right_border_ -= 2;
+      ++heads_curr_lbl_;
+      setTape();
+    } else {
+      --heads_curr_lbl_;
+      setTape();
+    }
   });
 }
 
@@ -627,10 +658,17 @@ void App::callStop() {
 }
 
 void App::playWithTuring() {
+  backupTable();
   if (!works_) {
     setTape();
     works_ = true;
   }
 
+  this->right_arrow_btn_->setDisabled(true);
+  this->left_arrow_btn_->setDisabled(true);
+  this->play_btn_->setDisabled(true);
+  this->table_label_->setDisabled(true);
 
+  turing_->moveToThread(turing_thread_);
+  turing_thread_->start();
 }

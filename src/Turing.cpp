@@ -144,7 +144,7 @@ bool Turing::setWord(const std::string &word) {
   // проверить на корректность
 
   for (char &letter: tape_) {
-    letter = -1;
+    letter = '^';
   }
   curr_pos_ = 5e3;
   for (int i = curr_pos_; i < curr_pos_ + word.size(); ++i) {
@@ -159,10 +159,10 @@ bool Turing::setWord(const std::string &word) {
 const std::string &Turing::getCurrWord() {
   int start = -1, end = -1;
   for (int i = 0; i < tape_.size(); ++i) {
-    if (tape_[i] != -1 && start == -1) {
+    if (tape_[i] != '^' && start == -1) {
       start = i;
     }
-    if (tape_[i] != -1) {
+    if (tape_[i] != '^') {
       end = i + 1;
     }
   }
@@ -181,7 +181,7 @@ const std::string &Turing::getCurrWord() {
 
 int Turing::recoverCurrPos() const {
   for (int i = 0; i < tape_.size(); ++i) {
-    if (tape_[i] != -1) return i;
+    if (tape_[i] != '^') return i;
   }
   return 5e3;
 }
@@ -271,11 +271,12 @@ void Turing::play() {
     if (ret < 0) {
       emit readyToMove(false);
       move_engine->setDirection(-1);
+      move_engine->moveElmOutThread();
     } else {
       emit readyToMove(true);
       move_engine->setDirection(1);
+      move_engine->moveElmOutThread();
     }
-    move_engine->moveElmOutThread();
 
     if (ret == 10 || ret == -10) {
       emit stopped();

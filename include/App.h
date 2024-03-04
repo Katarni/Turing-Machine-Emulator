@@ -40,6 +40,10 @@ class App : protected QMainWindow {
 
   void playWithTuring();
 
+  void callError();
+
+  void callStop();
+
  private:
   int heads_curr_lbl_ = 3;
   int left_border_ = 5e3, right_border_ = 5e3 + 7;
@@ -116,8 +120,4 @@ class App : protected QMainWindow {
   void resetTape();
 
   void setTape();
-
-  void callError();
-
-  void callStop();
 };
