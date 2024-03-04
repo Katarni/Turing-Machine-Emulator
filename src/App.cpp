@@ -259,7 +259,7 @@ App::App() {
   //// Work buttons
   next_step_btn_ = new QPushButton(turing_head_);
   next_step_btn_->resize(40, 40);
-  next_step_btn_->move(200, 80);
+  next_step_btn_->move(190, 80);
   next_step_btn_->setStyleSheet("QPushButton { border-radius: 20px;"
                                 "background: #eeca5a;"
                                 "font-size: 25px;"
@@ -269,7 +269,7 @@ App::App() {
 
   play_btn_ = new QPushButton(turing_head_);
   play_btn_->resize(40, 40);
-  play_btn_->move(255, 80);
+  play_btn_->move(245, 80);
   play_btn_->setStyleSheet("QPushButton { border-radius: 20px;"
                            "background: #eeca5a;"
                            "font-size: 25px;"
@@ -279,7 +279,7 @@ App::App() {
 
   pause_btn_ = new QPushButton(turing_head_);
   pause_btn_->resize(40, 40);
-  pause_btn_->move(310, 80);
+  pause_btn_->move(300, 80);
   pause_btn_->setStyleSheet("QPushButton { border-radius: 20px;"
                             "background: #eeca5a;"
                             "font-size: 25px;"
@@ -289,13 +289,33 @@ App::App() {
 
   stop_btn_ = new QPushButton(turing_head_);
   stop_btn_->resize(40, 40);
-  stop_btn_->move(365, 80);
+  stop_btn_->move(355, 80);
   stop_btn_->setStyleSheet("QPushButton { border-radius: 20px;"
                            "background: #eeca5a;"
                            "font-size: 25px;"
                            "padding-bottom: 3px; }");
   stop_btn_->setText("[x]");
   connect(stop_btn_, SIGNAL(released()), this, SLOT(callForceStop()));
+
+  add_speed_ = new QPushButton(turing_head_);
+  add_speed_->resize(40, 40);
+  add_speed_->move(410, 80);
+  add_speed_->setStyleSheet("QPushButton { border-radius: 20px;"
+                           "background: #eeca5a;"
+                           "font-size: 25px;"
+                           "padding-bottom: 3px; }");
+  add_speed_->setText("+");
+  connect(add_speed_, SIGNAL(released()), this, SLOT(addSpeed()));
+
+  remove_speed_ = new QPushButton(turing_head_);
+  remove_speed_->resize(40, 40);
+  remove_speed_->move(465, 80);
+  remove_speed_->setStyleSheet("QPushButton { border-radius: 20px;"
+                           "background: #eeca5a;"
+                           "font-size: 25px;"
+                           "padding-bottom: 3px; }");
+  remove_speed_->setText("-");
+  connect(remove_speed_, SIGNAL(released()), this, SLOT(removeSpeed()));
 
   //// connect local engine
   move_engine_ = new Engine;
@@ -319,10 +339,10 @@ App::App() {
   turing_thread_ = new QThread;
   connect(turing_thread_, &QThread::started, turing_, &Turing::play);
   connect(turing_->move_engine, &Engine::move, this, [this](int dis) {
-    this->head_lbl_->move(head_lbl_->x() + dis * move_engine_->getDirection(), head_lbl_->y());
+    this->head_lbl_->move(head_lbl_->x() + dis * turing_->move_engine->getDirection(), head_lbl_->y());
   });
   connect(turing_, &Turing::stopped, this, [this]() {
-    setTape();
+    setTape(0);
     callStop(false);
     this->right_arrow_btn_->setDisabled(false);
     this->left_arrow_btn_->setDisabled(false);
@@ -331,7 +351,7 @@ App::App() {
   });
   connect(turing_, &Turing::stopped, turing_thread_, &QThread::quit);
   connect(turing_, &Turing::error, this, [this]() {
-    setTape();
+    setTape(0);
     callError(false);
     this->right_arrow_btn_->setDisabled(false);
     this->left_arrow_btn_->setDisabled(false);
@@ -340,22 +360,22 @@ App::App() {
   });
   connect(turing_, &Turing::error, turing_thread_, &QThread::quit);
   connect(turing_, &Turing::readyToMove, this, [this](bool right) {
-    if (heads_curr_lbl_ == 6 && right) {
+    if (heads_curr_lbl_ == 5 && right) {
       left_border_ += 2;
       right_border_ += 2;
       --heads_curr_lbl_;
     } else if (right) {
       ++heads_curr_lbl_;
-    } else if (heads_curr_lbl_ == 0) {
+    } else if (heads_curr_lbl_ == 1) {
       left_border_ -= 2;
       right_border_ -= 2;
       ++heads_curr_lbl_;
     } else {
       --heads_curr_lbl_;
     }
-    setTape();
+    setTape(right ? -1 : 1);
   });
-  connect(turing_, &Turing::paused, this, [this](){ setTape(); });
+  connect(turing_, &Turing::paused, this, [this](){ setTape(0); });
   connect(turing_, &Turing::forceStop, this, [this](){ resetTape(); });
   connect(turing_, &Turing::paused, turing_thread_, &QThread::quit);
   connect(turing_, &Turing::forceStop, turing_thread_, &QThread::quit);
@@ -570,7 +590,7 @@ void App::moveHeadToRight() {
     left_border_ += 2;
     right_border_ += 2;
     --heads_curr_lbl_;
-    setTape();
+    setTape(0);
     return;
   }
   ++heads_curr_lbl_;
@@ -591,7 +611,7 @@ void App::moveHeadToLeft() {
     left_border_ -= 2;
     right_border_ -= 2;
     ++heads_curr_lbl_;
-    setTape();
+    setTape(0);
     return;
   }
   --heads_curr_lbl_;
@@ -617,7 +637,7 @@ void App::nextStep() {
     return;
   }
 
-  setTape();
+  setTape(0);
 
   if (ret == 100) {
     callStop(true);
@@ -637,18 +657,25 @@ void App::nextStep() {
   }
 }
 
-void App::setTape() {
+void App::setTape(int offset) {
   for (int i = 0; i < 7; ++i) {
     char letter = turing_->getElm(left_border_ + i);
     tape_[i]->setText(QChar(letter));
   }
 
-  head_lbl_->move(142 + tape_cell_width_ * heads_curr_lbl_, 260);
+  head_lbl_->move(142 + tape_cell_width_ * heads_curr_lbl_ + table_cell_width_*offset, 260);
 }
 
 void App::callError(bool from_step) {
-  heads_curr_lbl_ += !from_step;
-  setTape();
+//  if (heads_curr_lbl_ == 6 && !from_step) {
+//    left_border_ += 2;
+//    right_border_ += 2;
+//    --heads_curr_lbl_;
+//  } else if (!from_step_) {
+//    ++heads_curr_lbl_;
+//  }
+
+  setTape(0);
   works_ = false;
 
   message_lbl_->setStyleSheet("QLabel { background: transparent;"
@@ -658,8 +685,15 @@ void App::callError(bool from_step) {
 }
 
 void App::callStop(bool from_step) {
-  heads_curr_lbl_ += !from_step;
-  setTape();
+//  if (heads_curr_lbl_ == 6 && !from_step) {
+//    left_border_ += 2;
+//    right_border_ += 2;
+//    --heads_curr_lbl_;
+//  } else if (!from_step_) {
+//    ++heads_curr_lbl_;
+//  }
+
+  setTape(0);
   works_ = false;
 
   message_lbl_->setStyleSheet("QLabel { background: transparent;"
@@ -672,13 +706,13 @@ void App::playWithTuring() {
   message_lbl_->setText("");
   backupTable();
   if (!works_) {
-    setTape();
+    setTape(0);
     works_ = true;
   }
 
   turing_->setPaused(false);
   turing_->setForceStop(false);
-  --heads_curr_lbl_;
+//  --heads_curr_lbl_;
 
   this->right_arrow_btn_->setDisabled(true);
   this->left_arrow_btn_->setDisabled(true);
@@ -690,7 +724,6 @@ void App::playWithTuring() {
 }
 
 void App::callPause() {
-  heads_curr_lbl_ += 1;
   turing_->setPaused(true);
   this->play_btn_->setDisabled(false);
   message_lbl_->setStyleSheet("QLabel { background: transparent;"
@@ -705,4 +738,14 @@ void App::callForceStop() {
   this->left_arrow_btn_->setDisabled(false);
   this->play_btn_->setDisabled(false);
   this->table_label_->setDisabled(false);
+}
+
+void App::addSpeed() {
+  move_engine_->addSpeed();
+  turing_->move_engine->addSpeed();
+}
+
+void App::removeSpeed() {
+  move_engine_->removeSpeed();
+  turing_->move_engine->removeSpeed();
 }

@@ -83,6 +83,7 @@ void Turing::updateTable(bool clean) {
     row.resize(row.size() + letters.size());
     for (int j = (int) row.size() - (int) letters.size() - 1; j >= lambda_pos_; --j) {
       row[j + letters.size()] = row[j];
+      row[j].clear();
     }
   }
 
@@ -208,22 +209,27 @@ int Turing::nextStep() {
 
   if (curr_cell == -1 ||
       table_[curr_state_ + 1][curr_cell].empty() ||
-      table_[curr_state_ + 1][curr_cell].size() > 3) {
+      table_[curr_state_ + 1][curr_cell].size() > 4) {
     return -1e5;
   }
 
   int ret = 0;
   bool last = false;
+  bool moved = false, edited = false, edit_state = false;
   for (char c : table_[curr_state_ + 1][curr_cell]) {
     if (c == 'L') {
+      if (moved) return -1e5;
       ret = -1;
       --curr_pos_;
+      moved = true;
       continue;
     }
 
     if (c == 'R') {
+      if (moved) return -1e5;
       ret = 1;
       ++curr_pos_;
+      moved = true;
       continue;
     }
 
@@ -234,7 +240,9 @@ int Turing::nextStep() {
 
     if (c >= '0' && c <= '9') {
       if (c - '0' >= table_.size() - 1) return -1e5;
+      if (edit_state) return -1e5;
       curr_state_ = c - '0';
+      edit_state = true;
       continue;
     }
 
@@ -243,7 +251,9 @@ int Turing::nextStep() {
       return -1e5;
     }
 
+    if (edited) return -1e5;
     tape_[curr_pos_] = c;
+    edited = true;
   }
 
   if (last && ret != 0) return ret * 10;

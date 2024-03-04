@@ -48,6 +48,10 @@ class App : protected QMainWindow {
 
   void callForceStop();
 
+  void addSpeed();
+
+  void removeSpeed();
+
  private:
   int heads_curr_lbl_ = 3;
   int left_border_ = 5e3, right_border_ = 5e3 + 7;
@@ -90,6 +94,7 @@ class App : protected QMainWindow {
   QPushButton *left_arrow_btn_, *right_arrow_btn_;
   QPushButton *next_step_btn_;
   QPushButton *play_btn_, *pause_btn_, *stop_btn_;
+  QPushButton *add_speed_, *remove_speed_;
 
   QLineEdit *tape_alphabet_edit_;
   QLineEdit *heads_alphabet_edit_;
@@ -123,5 +128,5 @@ class App : protected QMainWindow {
 
   void resetTape();
 
-  void setTape();
+  void setTape(int offset);
 };
