@@ -62,7 +62,7 @@ class App : protected QMainWindow {
   bool works_ = false;
   bool from_step_ = false;
 
-  Turing turing_;
+  Turing *turing_;
 
   QMainWindow *window_;
 

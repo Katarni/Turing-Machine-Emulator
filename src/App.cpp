@@ -137,7 +137,7 @@ App::App() {
   connect(open_right_controller_btn_, SIGNAL(released()), this, SLOT(editRightCont()));
 
   //// Table
-  cells_.resize(turing_.getTable().size());
+  cells_.resize(turing_->getTable().size());
 
   table_label_ = new QLabel(window_);
   table_label_->resize((int) cells_[0].size() * table_cell_width_,
@@ -311,6 +311,16 @@ App::App() {
 
   resetTape();
   window_->show();
+
+  turing_thread_ = new QThread;
+  connect(turing_thread_, &QThread::started, turing_, &Turing::play);
+  connect(turing_->move_engine, &Engine::move, this, [this](int dis) {
+    this->head_lbl_->move(head_lbl_->x() + dis * move_engine_->getDirection(), head_lbl_->y());
+  });
+  connect(turing_->move_engine, &Engine::finished, this, [this]() {
+    this->right_arrow_btn_->setDisabled(false);
+    this->left_arrow_btn_->setDisabled(false);
+  });
 }
 
 void App::editLeftCont() {
@@ -414,7 +424,7 @@ void App::confirmAlphabets() {
 
   backupTable();
 
-  if (!turing_.changeAlphabets(tape, head)) {
+  if (!turing_->changeAlphabets(tape, head)) {
     tape_alphabet_edit_->setText("incorrect");
     heads_alphabet_edit_->setText("incorrect");
     return;
@@ -433,16 +443,16 @@ void App::updateTable() {
     }
   }
 
-  cells_.resize(turing_.size());
+  cells_.resize(turing_->size());
 
   for (int i = 0; i < cells_.size(); ++i) {
-    cells_[i].resize(turing_(i).size());
+    cells_[i].resize((*turing_)(i).size());
     for (int j = 0; j < cells_[i].size(); ++j) {
       cells_[i][j] = new QLineEdit(table_label_);
       cells_[i][j]->resize(table_cell_width_, table_cell_height_);
       cells_[i][j]->move(table_cell_width_ * j, table_cell_height_ * i);
       cells_[i][j]->setAlignment(Qt::AlignCenter);
-      cells_[i][j]->setText(QString::fromStdString(turing_(i, j)));
+      cells_[i][j]->setText(QString::fromStdString((*turing_)(i, j)));
       cells_[i][j]->setStyleSheet("QLabel { border: 1px solid #000;"
                                   "background: #fff;"
                                   "color: #000; }");
@@ -467,21 +477,21 @@ void App::updateTable() {
 void App::addRow() {
   message_lbl_->setText("");
   backupTable();
-  turing_.addRow();
+  turing_->addRow();
   updateTable();
 }
 
 void App::deleteRow() {
   message_lbl_->setText("");
   backupTable();
-  turing_.deleteRow();
+  turing_->deleteRow();
   updateTable();
 }
 
 void App::backupTable() {
-  for (int i = 1; i < turing_.size(); ++i) {
-    for (int j = 1; j < turing_(i).size(); ++j) {
-      turing_(i, j) = cells_[i][j]->text().toStdString();
+  for (int i = 1; i < turing_->size(); ++i) {
+    for (int j = 1; j < (*turing_)(i).size(); ++j) {
+      (*turing_)(i, j) = cells_[i][j]->text().toStdString();
     }
   }
 }
@@ -490,7 +500,7 @@ void App::setWord() {
   message_lbl_->setText("");
   std::string word = word_edit_->text().toStdString();
 
-  if (!turing_.setWord(word)) {
+  if (!turing_->setWord(word)) {
     word_edit_->setText("incorrect");
     return;
   }
@@ -501,17 +511,13 @@ void App::setWord() {
 
 void App::resetTape() {
   message_lbl_->setText("");
-  turing_.setCurrPos(turing_.recoverCurrPos());
-  left_border_ = turing_.getCurrPos();
+  turing_->setCurrPos(turing_->recoverCurrPos());
+  left_border_ = turing_->getCurrPos();
   right_border_ = left_border_ + 7;
 
   for (int i = 0; i < 7; ++i) {
-    char letter = turing_.getElm(left_border_ + i);
-    if (letter == -1) {
-      tape_[i]->setText(QString::fromStdString("/\\"));
-    } else {
-      tape_[i]->setText(QChar(letter));
-    }
+    char letter = turing_->getElm(left_border_ + i);
+    tape_[i]->setText(QChar(letter));
   }
 
   heads_curr_lbl_ = 0;
@@ -567,7 +573,7 @@ void App::nextStep() {
     works_ = true;
   }
 
-  int ret = turing_.nextStep();
+  int ret = turing_->nextStep();
   if (ret == -1e5) {
     callError();
     return;
@@ -595,12 +601,8 @@ void App::nextStep() {
 
 void App::setTape() {
   for (int i = 0; i < 7; ++i) {
-    char letter = turing_.getElm(left_border_ + i);
-    if (letter == -1) {
-      tape_[i]->setText(QString::fromStdString("/\\"));
-    } else {
-      tape_[i]->setText(QChar(letter));
-    }
+    char letter = turing_->getElm(left_border_ + i);
+    tape_[i]->setText(QChar(letter));
   }
 
   head_lbl_->move(142 + tape_cell_width_ * heads_curr_lbl_, 260);

@@ -12,6 +12,8 @@ class Turing: public QObject {
   Q_OBJECT
 
  public:
+  Engine* move_engine;
+
   Turing();
 
   bool changeAlphabets(std::string &new_tape, std::string &new_head);
@@ -50,7 +52,17 @@ class Turing: public QObject {
 
   int nextStep();
 
+ public slots:
   void play();
+
+ signals:
+  void error();
+
+  void setTape();
+
+  void stopped();
+
+  void readyToMove(bool);
 
  private:
   int lambda_pos_ = 1;

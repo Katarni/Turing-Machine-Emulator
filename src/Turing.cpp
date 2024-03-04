@@ -12,6 +12,8 @@ Turing::Turing() {
   table_[0].resize(2);
   table_[0][1] = "^";
   addRow();
+
+  move_engine = new Engine;
 }
 
 bool Turing::changeAlphabets(std::string &new_tape, std::string &new_head) {
@@ -251,5 +253,33 @@ int Turing::nextStep() {
 }
 
 void Turing::play() {
+  while (true) {
+    int ret = nextStep();
 
+    if (ret == -1e5) {
+      emit error();
+      return;
+    }
+
+    emit setTape();
+
+    if (ret == 100) {
+      emit stopped();
+      return;
+    }
+
+    if (ret < 0) {
+      emit readyToMove(false);
+      move_engine->setDirection(-1);
+    } else {
+      emit readyToMove(true);
+      move_engine->setDirection(1);
+    }
+    move_engine->moveElmOutThread();
+
+    if (ret == 10 || ret == -10) {
+      emit stopped();
+      return;
+    }
+  }
 }
