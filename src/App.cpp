@@ -285,6 +285,7 @@ App::App() {
                             "font-size: 25px;"
                             "padding-bottom: 3px; }");
   pause_btn_->setText("||");
+  connect(pause_btn_, SIGNAL(released()), this, SLOT(callPause()));
 
   stop_btn_ = new QPushButton(turing_head_);
   stop_btn_->resize(40, 40);
@@ -294,6 +295,7 @@ App::App() {
                            "font-size: 25px;"
                            "padding-bottom: 3px; }");
   stop_btn_->setText("[x]");
+  connect(stop_btn_, SIGNAL(released()), this, SLOT(callForceStop()));
 
   //// connect local engine
   move_engine_ = new Engine;
@@ -320,38 +322,43 @@ App::App() {
     this->head_lbl_->move(head_lbl_->x() + dis * move_engine_->getDirection(), head_lbl_->y());
   });
   connect(turing_, &Turing::stopped, this, [this]() {
-    callStop();
+    setTape();
+    callStop(false);
     this->right_arrow_btn_->setDisabled(false);
     this->left_arrow_btn_->setDisabled(false);
     this->play_btn_->setDisabled(false);
     this->table_label_->setDisabled(false);
   });
+  connect(turing_, &Turing::stopped, turing_thread_, &QThread::quit);
   connect(turing_, &Turing::error, this, [this]() {
-    callError();
+    setTape();
+    callError(false);
     this->right_arrow_btn_->setDisabled(false);
     this->left_arrow_btn_->setDisabled(false);
     this->play_btn_->setDisabled(false);
     this->table_label_->setDisabled(false);
   });
+  connect(turing_, &Turing::error, turing_thread_, &QThread::quit);
   connect(turing_, &Turing::readyToMove, this, [this](bool right) {
     if (heads_curr_lbl_ == 6 && right) {
       left_border_ += 2;
       right_border_ += 2;
       --heads_curr_lbl_;
-      setTape();
     } else if (right) {
       ++heads_curr_lbl_;
-      setTape();
     } else if (heads_curr_lbl_ == 0) {
       left_border_ -= 2;
       right_border_ -= 2;
       ++heads_curr_lbl_;
-      setTape();
     } else {
       --heads_curr_lbl_;
-      setTape();
     }
+    setTape();
   });
+  connect(turing_, &Turing::paused, this, [this](){ setTape(); });
+  connect(turing_, &Turing::forceStop, this, [this](){ resetTape(); });
+  connect(turing_, &Turing::paused, turing_thread_, &QThread::quit);
+  connect(turing_, &Turing::forceStop, turing_thread_, &QThread::quit);
 }
 
 void App::editLeftCont() {
@@ -606,14 +613,14 @@ void App::nextStep() {
 
   int ret = turing_->nextStep();
   if (ret == -1e5) {
-    callError();
+    callError(true);
     return;
   }
 
   setTape();
 
   if (ret == 100) {
-    callStop();
+    callStop(true);
     return;
   }
 
@@ -626,7 +633,7 @@ void App::nextStep() {
   from_step_ = false;
 
   if (ret == 10 || ret == -10) {
-    callStop();
+    callStop(true);
   }
 }
 
@@ -639,7 +646,9 @@ void App::setTape() {
   head_lbl_->move(142 + tape_cell_width_ * heads_curr_lbl_, 260);
 }
 
-void App::callError() {
+void App::callError(bool from_step) {
+  heads_curr_lbl_ += !from_step;
+  setTape();
   works_ = false;
 
   message_lbl_->setStyleSheet("QLabel { background: transparent;"
@@ -648,7 +657,9 @@ void App::callError() {
   message_lbl_->setText("error");
 }
 
-void App::callStop() {
+void App::callStop(bool from_step) {
+  heads_curr_lbl_ += !from_step;
+  setTape();
   works_ = false;
 
   message_lbl_->setStyleSheet("QLabel { background: transparent;"
@@ -658,11 +669,16 @@ void App::callStop() {
 }
 
 void App::playWithTuring() {
+  message_lbl_->setText("");
   backupTable();
   if (!works_) {
     setTape();
     works_ = true;
   }
+
+  turing_->setPaused(false);
+  turing_->setForceStop(false);
+  --heads_curr_lbl_;
 
   this->right_arrow_btn_->setDisabled(true);
   this->left_arrow_btn_->setDisabled(true);
@@ -671,4 +687,22 @@ void App::playWithTuring() {
 
   turing_->moveToThread(turing_thread_);
   turing_thread_->start();
+}
+
+void App::callPause() {
+  heads_curr_lbl_ += 1;
+  turing_->setPaused(true);
+  this->play_btn_->setDisabled(false);
+  message_lbl_->setStyleSheet("QLabel { background: transparent;"
+                              "color: #9ea3a2;"
+                              "font-size: 25px; }");
+  message_lbl_->setText("paused");
+}
+
+void App::callForceStop() {
+  turing_->setForceStop(true);
+  this->right_arrow_btn_->setDisabled(false);
+  this->left_arrow_btn_->setDisabled(false);
+  this->play_btn_->setDisabled(false);
+  this->table_label_->setDisabled(false);
 }

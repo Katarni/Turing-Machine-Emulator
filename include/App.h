@@ -40,9 +40,13 @@ class App : protected QMainWindow {
 
   void playWithTuring();
 
-  void callError();
+  void callError(bool from_step);
 
-  void callStop();
+  void callStop(bool from_step);
+
+  void callPause();
+
+  void callForceStop();
 
  private:
   int heads_curr_lbl_ = 3;

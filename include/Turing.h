@@ -52,24 +52,31 @@ class Turing: public QObject {
 
   int nextStep();
 
+  void setPaused(bool paused);
+
+  void setForceStop(bool forceStop);
+
  public slots:
   void play();
 
  signals:
   void error();
 
-  void setTape();
-
   void stopped();
 
   void readyToMove(bool);
+
+  void paused();
+
+  void forceStop();
 
  private:
   int lambda_pos_ = 1;
   int curr_pos_ = 5e3;
   int curr_state_ = 0;
 
-  bool paused = false;
+  bool paused_ = false;
+  bool force_stop_ = false;
 
   std::vector<char> tape_;
 

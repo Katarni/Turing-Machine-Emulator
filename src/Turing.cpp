@@ -254,14 +254,22 @@ int Turing::nextStep() {
 
 void Turing::play() {
   while (true) {
+    if (paused_) {
+      emit paused();
+      return;
+    }
+
+    if (force_stop_) {
+      emit forceStop();
+      return;
+    }
+
     int ret = nextStep();
 
     if (ret == -1e5) {
       emit error();
       return;
     }
-
-    emit setTape();
 
     if (ret == 100) {
       emit stopped();
@@ -283,4 +291,12 @@ void Turing::play() {
       return;
     }
   }
+}
+
+void Turing::setPaused(bool paused) {
+  paused_ = paused;
+}
+
+void Turing::setForceStop(bool force_stop) {
+  force_stop_ = force_stop;
 }

@@ -22,8 +22,8 @@ int Engine::getDirection() const {
 }
 
 void Engine::moveElmOutThread() {
-  for (int i = 0; i < distance_ * 1e6; ++i) {
-    if (i % (int) 1e6 == 0) {
+  for (int i = 0; i < distance_ * 1e7; ++i) {
+    if (i % (int) 1e7 == 0) {
       emit move(1);
     }
   }
