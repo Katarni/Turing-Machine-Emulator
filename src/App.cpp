@@ -744,6 +744,7 @@ void App::playWithTuring() {
 }
 
 void App::callPause() {
+  if (!works_) return;
   turing_->setPaused(true);
   this->play_btn_->setDisabled(false);
   message_lbl_->setStyleSheet("QLabel { background: transparent;"
