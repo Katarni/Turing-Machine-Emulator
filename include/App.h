@@ -131,4 +131,6 @@ class App : protected QMainWindow {
   void resetTape();
 
   void setTape(int offset);
+
+  void recoverTableColor();
 };

@@ -81,6 +81,7 @@ void Turing::updateTable(bool clean) {
 
   for (auto &row: table_) {
     row.resize(row.size() + letters.size());
+    if ((int)letters.size() == 0) continue;
     for (int j = (int) row.size() - (int) letters.size() - 1; j >= lambda_pos_; --j) {
       row[j + letters.size()] = row[j];
       row[j].clear();
@@ -229,6 +230,12 @@ int Turing::nextStep() {
       if (state_current_edit) {
         edit_state = true;
         state_current_edit = false;
+        if (state >= table_.size() - 1) {
+          return -1e5;
+        }
+        if (state != -1) {
+          emit stateChanged(curr_state_, state);
+        }
         curr_state_ = state == -1 ? curr_state_ : state;
       }
       ret = -1;
@@ -242,6 +249,12 @@ int Turing::nextStep() {
       if (state_current_edit) {
         edit_state = true;
         state_current_edit = false;
+        if (state >= table_.size() - 1) {
+          return -1e5;
+        }
+        if (state != -1) {
+          emit stateChanged(curr_state_, state);
+        }
         curr_state_ = state == -1 ? curr_state_ : state;
       }
       ret = 1;
@@ -272,6 +285,9 @@ int Turing::nextStep() {
     if (state_current_edit) {
       edit_state = true;
       state_current_edit = false;
+      if (state != -1) {
+        emit stateChanged(curr_state_, state);
+      }
       curr_state_ = state == -1 ? curr_state_ : state;
     }
     tape_[curr_pos_] = c;
@@ -279,6 +295,12 @@ int Turing::nextStep() {
   }
 
   if (state_current_edit) {
+    if (state >= table_.size() - 1) {
+      return -1e5;
+    }
+    if (state != -1) {
+      emit stateChanged(curr_state_, state);
+    }
     curr_state_ = state == -1 ? curr_state_ : state;
   }
 
@@ -346,4 +368,16 @@ bool Turing::cantStop() {
     }
   }
   return true;
+}
+
+void Turing::setCurrState(int curr_state) {
+  curr_state_ = curr_state;
+}
+
+int Turing::getCurrState() const {
+  return curr_state_;
+}
+
+void Turing::resetWord() {
+  setWord(start_word_);
 }

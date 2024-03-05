@@ -54,9 +54,13 @@ class Turing: public QObject {
 
   void setPaused(bool paused);
 
-  void setForceStop(bool forceStop);
+  void setForceStop(bool force_stop);
 
   bool cantStop();
+
+  void setCurrState(int curr_state);
+
+  int getCurrState() const;
 
  public slots:
   void play();
@@ -71,6 +75,10 @@ class Turing: public QObject {
   void paused();
 
   void forceStop();
+
+  void stateChanged(int, int);
+
+  void resetWord();
 
  private:
   int lambda_pos_ = 1;

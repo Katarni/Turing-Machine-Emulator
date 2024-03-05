@@ -341,6 +341,16 @@ App::App() {
   connect(turing_->move_engine, &Engine::move, this, [this](int dis) {
     this->head_lbl_->move(head_lbl_->x() + dis * turing_->move_engine->getDirection(), head_lbl_->y());
   });
+  connect(turing_, &Turing::stateChanged, this, [this](int prev, int curr) {
+    for (int i = 0; i < cells_[curr].size(); ++i) {
+      cells_[prev][i]->setStyleSheet("QLabel { border: 1px solid #000;"
+                                        "background: #fff;"
+                                        "color: #000; }");
+      cells_[curr][i]->setStyleSheet("QLabel { border: 1px solid #000;"
+                                        "background: #eeca5a;"
+                                        "color: #000; }");
+    }
+  });
   connect(turing_, &Turing::stopped, this, [this]() {
     setTape(0);
     callStop();
@@ -569,7 +579,10 @@ void App::setWord() {
 
 void App::resetTape() {
   message_lbl_->setText("");
+  turing_->resetWord();
   turing_->setCurrPos(turing_->recoverCurrPos());
+  turing_->setCurrState(0);
+
   left_border_ = turing_->getCurrPos();
   right_border_ = left_border_ + 7;
 
@@ -636,6 +649,12 @@ void App::nextStep() {
     return;
   }
 
+  for (auto & i : cells_[turing_->getCurrState()]) {
+    i->setStyleSheet("QLabel { border: 1px solid #000;"
+                                   "background: #eeca5a;"
+                                   "color: #000; }");
+  }
+
   int ret = turing_->nextStep();
   if (ret == -1e5) {
     callError();
@@ -695,7 +714,7 @@ void App::playWithTuring() {
   message_lbl_->setText("");
   backupTable();
   if (!works_) {
-    setTape(0);
+    resetTape();
     works_ = true;
   }
 
@@ -751,4 +770,14 @@ void App::callCantStop() {
                               "color: red;"
                               "font-size: 25px; }");
   message_lbl_->setText("can't stop");
+}
+
+void App::recoverTableColor() {
+  for (auto& row : cells_) {
+    for (auto& cell : row) {
+      cell->setStyleSheet("QLabel { border: 1px solid #000;"
+                                  "background: #fff;"
+                                  "color: #000; }");
+    }
+  }
 }
