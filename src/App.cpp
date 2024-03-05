@@ -721,6 +721,7 @@ void App::playWithTuring() {
   backupTable();
   if (!works_) {
     setTape(0);
+    turing_->setCurrState(0);
     works_ = true;
   }
 

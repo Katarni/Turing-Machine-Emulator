@@ -51,7 +51,6 @@ class App : protected QMainWindow {
   void addSpeed();
 
   void removeSpeed();
-
   void callCantStop();
 
  private:
