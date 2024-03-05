@@ -342,11 +342,11 @@ App::App() {
     this->head_lbl_->move(head_lbl_->x() + dis * turing_->move_engine->getDirection(), head_lbl_->y());
   });
   connect(turing_, &Turing::stateChanged, this, [this](int prev, int curr) {
-    for (int i = 0; i < cells_[curr].size(); ++i) {
-      cells_[prev][i]->setStyleSheet("QLabel { border: 1px solid #000;"
+    for (int i = 0; i < cells_[curr + 1].size(); ++i) {
+      cells_[prev + 1][i]->setStyleSheet("QLineEdit { border: 1px solid #000;"
                                         "background: #fff;"
                                         "color: #000; }");
-      cells_[curr][i]->setStyleSheet("QLabel { border: 1px solid #000;"
+      cells_[curr + 1][i]->setStyleSheet("QLineEdit { border: 1px solid #000;"
                                         "background: #eeca5a;"
                                         "color: #000; }");
     }
@@ -370,13 +370,13 @@ App::App() {
   });
   connect(turing_, &Turing::error, turing_thread_, &QThread::quit);
   connect(turing_, &Turing::readyToMove, this, [this](bool right) {
-    if (heads_curr_lbl_ == 5 && right) {
+    if (heads_curr_lbl_ == 6 && right) {
       left_border_ += 2;
       right_border_ += 2;
       --heads_curr_lbl_;
     } else if (right) {
       ++heads_curr_lbl_;
-    } else if (heads_curr_lbl_ == 1) {
+    } else if (heads_curr_lbl_ == 0) {
       left_border_ -= 2;
       right_border_ -= 2;
       ++heads_curr_lbl_;
@@ -521,7 +521,7 @@ void App::updateTable() {
       cells_[i][j]->move(table_cell_width_ * j, table_cell_height_ * i);
       cells_[i][j]->setAlignment(Qt::AlignCenter);
       cells_[i][j]->setText(QString::fromStdString((*turing_)(i, j)));
-      cells_[i][j]->setStyleSheet("QLabel { border: 1px solid #000;"
+      cells_[i][j]->setStyleSheet("QLineEdit { border: 1px solid #000;"
                                   "background: #fff;"
                                   "color: #000; }");
     }
@@ -649,8 +649,8 @@ void App::nextStep() {
     return;
   }
 
-  for (auto & i : cells_[turing_->getCurrState()]) {
-    i->setStyleSheet("QLabel { border: 1px solid #000;"
+  for (auto & i : cells_[turing_->getCurrState() + 1]) {
+    i->setStyleSheet("QLineEdit { border: 1px solid #000;"
                                    "background: #eeca5a;"
                                    "color: #000; }");
   }
@@ -698,6 +698,7 @@ void App::callError() {
                               "color: red;"
                               "font-size: 25px; }");
   message_lbl_->setText("error");
+  recoverTableColor();
 }
 
 void App::callStop() {
@@ -708,6 +709,7 @@ void App::callStop() {
                               "color: #9ea3a2;"
                               "font-size: 25px; }");
   message_lbl_->setText("stopped");
+  recoverTableColor();
 }
 
 void App::playWithTuring() {
@@ -721,6 +723,12 @@ void App::playWithTuring() {
   if (turing_->cantStop()) {
     callCantStop();
     return;
+  }
+
+  for (auto & i : cells_[turing_->getCurrState() + 1]) {
+    i->setStyleSheet("QLineEdit { border: 1px solid #000;"
+                     "background: #eeca5a;"
+                     "color: #000; }");
   }
 
   turing_->setPaused(false);
@@ -750,6 +758,7 @@ void App::callForceStop() {
   this->left_arrow_btn_->setDisabled(false);
   this->play_btn_->setDisabled(false);
   this->table_label_->setDisabled(false);
+  recoverTableColor();
 }
 
 void App::addSpeed() {
@@ -770,12 +779,13 @@ void App::callCantStop() {
                               "color: red;"
                               "font-size: 25px; }");
   message_lbl_->setText("can't stop");
+  recoverTableColor();
 }
 
 void App::recoverTableColor() {
   for (auto& row : cells_) {
     for (auto& cell : row) {
-      cell->setStyleSheet("QLabel { border: 1px solid #000;"
+      cell->setStyleSheet("QLineEdit { border: 1px solid #000;"
                                   "background: #fff;"
                                   "color: #000; }");
     }

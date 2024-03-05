@@ -28,16 +28,16 @@ class Engine : public QObject {
 
  public:
   void addSpeed() {
-    if (speed <= 1e5) return;
-    speed >>= 1;
+    if (speed_ <= 1e5) return;
+    speed_ >>= 1;
   }
 
   void removeSpeed() {
-    speed <<= 1;
+    speed_ <<= 1;
   }
 
  private:
   int distance_ = 60;
   int direction_ = 1;
-  int speed = 1e7;
+  int speed_ = 1e7;
 };

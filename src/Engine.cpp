@@ -5,8 +5,8 @@
 #include "../include/Engine.h"
 
 void Engine::moveElmInThread() {
-  for (int i = 0; i < distance_ * speed; ++i) {
-    if (i % (int) speed == 0) {
+  for (int i = 0; i < distance_ * speed_; ++i) {
+    if (i % (int) speed_ == 0) {
       emit move(1);
     }
   }
@@ -22,8 +22,8 @@ int Engine::getDirection() const {
 }
 
 void Engine::moveElmOutThread() {
-  for (int i = 0; i < distance_ * speed; ++i) {
-    if (i % (int) speed == 0) {
+  for (int i = 0; i < distance_ * speed_; ++i) {
+    if (i % (int) speed_ == 0) {
       emit move(1);
     }
   }

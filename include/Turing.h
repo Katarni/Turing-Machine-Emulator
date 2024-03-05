@@ -62,6 +62,8 @@ class Turing: public QObject {
 
   int getCurrState() const;
 
+  void resetWord();
+
  public slots:
   void play();
 
@@ -77,8 +79,6 @@ class Turing: public QObject {
   void forceStop();
 
   void stateChanged(int, int);
-
-  void resetWord();
 
  private:
   int lambda_pos_ = 1;
