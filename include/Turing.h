@@ -40,7 +40,7 @@ class Turing: public QObject {
 
   bool setWord(const std::string &word);
 
-  const std::string &getCurrWord();
+  std::string getCurrWord();
 
   int recoverCurrPos() const;
 

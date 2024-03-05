@@ -582,6 +582,7 @@ void App::resetTape() {
   turing_->resetWord();
   turing_->setCurrPos(turing_->recoverCurrPos());
   turing_->setCurrState(0);
+  curr_word_holder_ldl_->setText(QString::fromStdString(turing_->getCurrWord()));
 
   left_border_ = turing_->getCurrPos();
   right_border_ = left_border_ + 7;
@@ -598,6 +599,7 @@ void App::resetTape() {
 void App::moveHeadToRight() {
   message_lbl_->setText("");
   if (!from_step_) works_ = false;
+  turing_->setCurrPos(turing_->getCurrPos() + 1);
 
   if (heads_curr_lbl_ == 6) {
     left_border_ += 2;
@@ -619,6 +621,7 @@ void App::moveHeadToRight() {
 void App::moveHeadToLeft() {
   message_lbl_->setText("");
   if (!from_step_) works_ = false;
+  turing_->setCurrPos(turing_->getCurrPos() - 1);
 
   if (heads_curr_lbl_ == 0) {
     left_border_ -= 2;
@@ -640,7 +643,7 @@ void App::moveHeadToLeft() {
 void App::nextStep() {
   backupTable();
   if (!works_) {
-    resetTape();
+    setTape(0);
     works_ = true;
   }
 
@@ -710,13 +713,14 @@ void App::callStop() {
                               "font-size: 25px; }");
   message_lbl_->setText("stopped");
   recoverTableColor();
+  curr_word_holder_ldl_->setText(QString::fromStdString(turing_->getCurrWord()));
 }
 
 void App::playWithTuring() {
   message_lbl_->setText("");
   backupTable();
   if (!works_) {
-    resetTape();
+    setTape(0);
     works_ = true;
   }
 

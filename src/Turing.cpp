@@ -145,7 +145,8 @@ void Turing::deleteRow() {
 bool Turing::setWord(const std::string &word) {
   for (char c : word) {
     if (heads_alphabet_.find(c) == std::string::npos &&
-      tapes_alphabet_.find(c) == std::string::npos) {
+      tapes_alphabet_.find(c) == std::string::npos &&
+      c != '^') {
       return false;
     }
   }
@@ -163,7 +164,7 @@ bool Turing::setWord(const std::string &word) {
   return true;
 }
 
-const std::string &Turing::getCurrWord() {
+std::string Turing::getCurrWord() {
   int start = -1, end = -1;
   for (int i = 0; i < tape_.size(); ++i) {
     if (tape_[i] != '^' && start == -1) {
