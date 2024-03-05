@@ -694,7 +694,7 @@ void App::setTape(int offset) {
 }
 
 void App::callError() {
-  setTape(0);
+  resetTape();
   works_ = false;
 
   message_lbl_->setStyleSheet("QLabel { background: transparent;"
