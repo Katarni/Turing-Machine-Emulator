@@ -17,13 +17,17 @@ Turing::Turing() {
 }
 
 bool Turing::changeAlphabets(std::string &new_tape, std::string &new_head) {
-  // проверить алфавиты на корректность
-
   std::unordered_set<char> letters;
   for (char c : new_tape) {
+    if (c == 'L' || c == 'R' || c >= '0' && c <= '0') {
+      return false;
+    }
     letters.insert(c);
   }
   for (char c : new_head) {
+    if (c == 'L' || c == 'R' || c >= '0' && c <= '0') {
+      return false;
+    }
     letters.insert(c);
   }
 
