@@ -14,7 +14,7 @@ class App : protected QMainWindow {
 
  public:
 
-  App();
+  App(const std::string& assets_dir);
 
  private slots:
 

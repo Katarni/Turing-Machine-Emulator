@@ -4,7 +4,7 @@
 
 #include "../include/App.h"
 
-App::App() {
+App::App(const std::string& assets_dir) {
   window_ = new QMainWindow();
   window_->setWindowFlags(Qt::FramelessWindowHint);
   window_->setFixedSize(width, height);
@@ -14,9 +14,10 @@ App::App() {
   turing_head_ = new QWidget(window_);
   turing_head_->setFixedSize(700, 800);
   turing_head_->move(380, 0);
-  turing_head_->setStyleSheet("QWidget { background: url(../img/turing.png);"
-                              "background-position: center center;"
-                              "background-repeat: no-repeat; }");
+  turing_head_->setStyleSheet(QString::fromStdString(std::string("QWidget { background: url(") +
+                                                      assets_dir +
+                                                      "/turing.png); background-position: center center;"
+                                                      "background-repeat: no-repeat; }"));
 
   exit_btn_ = new QPushButton(window_);
   exit_btn_->resize(30, 30);
@@ -36,13 +37,13 @@ App::App() {
   left_ear_ = new QWidget(window_);
   left_ear_->setFixedSize(220, 400);
   left_ear_->move(close_ear_left_x_, close_ear_left_y_);
-  left_ear_->setStyleSheet("QWidget { background: url(../img/left_ear.png); }");
+  left_ear_->setStyleSheet(QString::fromStdString(std::string("QWidget { background: url(") + assets_dir + "/left_ear.png); }"));
   left_ear_->stackUnder(turing_head_);
 
   left_controller_ = new QWidget(window_);
   left_controller_->setFixedSize(550, 450);
   left_controller_->move(close_cont_left_x_, close_cont_left_y_);
-  left_controller_->setStyleSheet("QWidget { background: url(../img/left_controller.png); }");
+  left_controller_->setStyleSheet(QString::fromStdString(std::string("QWidget { background: url(") + assets_dir + "/left_controller.png); }"));
   left_controller_->stackUnder(turing_head_);
   left_controller_->hide();
 
@@ -119,13 +120,13 @@ App::App() {
   right_ear_ = new QWidget(window_);
   right_ear_->setFixedSize(220, 400);
   right_ear_->move(close_ear_right_x_, close_ear_right_y_);
-  right_ear_->setStyleSheet("QWidget { background: url(../img/right_ear.png); }");
+  right_ear_->setStyleSheet(QString::fromStdString(std::string("QWidget { background: url(") + assets_dir + "/right_ear.png); }"));
   right_ear_->stackUnder(turing_head_);
 
   right_controller_ = new QWidget(window_);
   right_controller_->setFixedSize(550, 450);
   right_controller_->move(close_cont_right_x_, close_cont_right_y_);
-  right_controller_->setStyleSheet("QWidget { background: url(../img/right_controller.png); }");
+  right_controller_->setStyleSheet(QString::fromStdString(std::string("QWidget { background: url(") + assets_dir + "/right_controller.png); }"));
   right_controller_->stackUnder(turing_head_);
   right_controller_->hide();
 

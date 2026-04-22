@@ -12,6 +12,7 @@
 #include <thread>
 #include <chrono>
 #include <iostream>
+#include <string>
 
 // qt
 #include <QMainWindow>
