@@ -30,9 +30,7 @@ class Turing: public QObject {
 
   const std::vector<std::string> &operator()(int i) const;
 
-  const size_t &size() const {
-    return table_.size();
-  }
+  std::size_t size() const;
 
   void addRow();
 
@@ -60,7 +58,7 @@ class Turing: public QObject {
 
   void setCurrState(int curr_state);
 
-  int getCurrState() const;
+  [[nodiscard]] int getCurrState() const;
 
   void resetWord();
 

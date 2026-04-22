@@ -386,3 +386,7 @@ int Turing::getCurrState() const {
 void Turing::resetWord() {
   setWord(start_word_);
 }
+
+std::size_t Turing::size() const {
+  return table_.size();
+}
